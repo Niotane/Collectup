@@ -18,7 +18,8 @@ const DisplayMap = () => {
 
     const H = window.H;
     const platform = new H.service.Platform({
-      apikey: process.env.REACT_APP_HERE_API_KEY,
+      app_id: 'bIkphHOZuBbetuKzgtyc',
+      apikey: 'nb-psgXH-zr1x8yBLdFEJWxV_s2RLQ9dlJst_oh-bac',
     });
     const defaultLayers = platform.createDefaultLayers();
 
