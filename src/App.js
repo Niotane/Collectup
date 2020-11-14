@@ -7,7 +7,7 @@ import DisplayMap from './Map/DisplayMap';
 const theme = {
   global: {
     colors: {
-      brand: '#8ac6d1',
+      brand: '#7D4CDB',
     },
     font: {
       family: 'Roboto',
@@ -34,11 +34,11 @@ const AppBar = (props) => {
 };
 function App() {
   return (
-    <Grommet theme={theme} full>
+    <Grommet theme={theme} themeMode='dark' full>
       <Box fill>
         <AppBar>
-          <Heading level='3' margin='none'>
-            Collector
+          <Heading level='2' margin='none'>
+            Collect.io
           </Heading>
           <Button icon={<Notification />} onClick={() => {}} />
         </AppBar>

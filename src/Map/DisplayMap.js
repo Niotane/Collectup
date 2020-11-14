@@ -1,5 +1,7 @@
-import * as React from 'react';
 import './mapsui.css';
+import * as React from 'react';
+
+import addMarkers from './addMarkers';
 
 const DisplayMap = () => {
   // Create a reference to the HTML element we want to put the map on
@@ -13,16 +15,21 @@ const DisplayMap = () => {
   React.useLayoutEffect(() => {
     // `mapRef.current` will be `undefined` when this hook first runs; edge case that
     if (!mapRef.current) return;
+
     const H = window.H;
     const platform = new H.service.Platform({
       apikey: process.env.REACT_APP_HERE_API_KEY,
     });
     const defaultLayers = platform.createDefaultLayers();
+
     const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
       center: { lat: 50, lng: 5 },
       zoom: 4,
       pixelRatio: window.devicePixelRatio || 1,
     });
+
+    // Add markers
+    addMarkers(hMap, H);
 
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
