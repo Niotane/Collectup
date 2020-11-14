@@ -2,6 +2,8 @@ import './App.css';
 import { Grommet, Button, Heading, Box } from 'grommet';
 import { Notification } from 'grommet-icons';
 
+import DisplayMap from './Map/DisplayMap';
+
 const theme = {
   global: {
     colors: {
@@ -41,10 +43,10 @@ function App() {
           <Button icon={<Notification />} onClick={() => {}} />
         </AppBar>
         <Box direction='row' flex overflow={{ horizontal: 'hidden' }}>
-          <Box flex align='center' justify='center'>
-            app body
+          <Box flex align='center' justify='start'>
+            <DisplayMap />
           </Box>
-          <Box
+          {/* <Box
             width='medium'
             background='light-2'
             elevation='small'
@@ -52,7 +54,7 @@ function App() {
             justify='center'
           >
             sidebar
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Grommet>
