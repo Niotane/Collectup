@@ -13,16 +13,8 @@ app.use(bodyParser.raw());
 
 // returns the coords of all registered items
 app.get('/location', (req, res, next) => {
-  Item.find({}, { location: 1, category: 1 })
+  Item.find()
     .then((data) => res.json({ data }))
-    .catch((err) => console.log(err));
-});
-
-app.patch('/details', (req, res, next) => {
-  const location = req.body.location;
-  console.log('req', req);
-  Item.find({ location })
-    .then((data) => console.log({ data }))
     .catch((err) => console.log(err));
 });
 
