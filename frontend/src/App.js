@@ -27,7 +27,6 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import Modal from 'react-modal';
 import ta from 'time-ago';
 
-import ImageUpload from './util/ImageUpload';
 import broken from './img/brokenr.jpg';
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
@@ -118,12 +117,13 @@ function App() {
     event.preventDefault();
     try {
       let formData = new FormData();
-      formData.append('user', 'Tim');
-      formData.append('phoneNumber', '12409124');
-      formData.append('description', 'Old furniture');
-      formData.append('address', 'test test test');
-      formData.append('country', 'China');
-      formData.append('city', 'BeiJing');
+      console.log(event.target.phone.value);
+      formData.append('user', event.target.name.value);
+      formData.append('phoneNumber', event.target.phone.value);
+      formData.append('description', event.target.description.value);
+      formData.append('address', event.target.address.value);
+      formData.append('country', event.target.country.value);
+      formData.append('city', event.target.city.value);
       formData.append('category', 'Household');
       formData.append('location', JSON.stringify({ lat: '36', lng: '105' }));
       formData.append('image', formState.inputs.image.value);
@@ -170,7 +170,7 @@ function App() {
         style={modalStyle}
         contentLabel='User POST Form'
       >
-        <FormView />
+        <FormView formHandler={formSubmitHandler} inputHandler={inputHandler} />
       </Modal>
       <Box height='60%'>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>

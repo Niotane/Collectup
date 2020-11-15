@@ -58,28 +58,30 @@ const DisplayMap = ({ markers, setCurrMarker, query, setMidLocations }) => {
     // getRevLocation(service, JSON.parse(localStorage.getItem('midLocations')));
 
     // const midLocations = JSON.parse(localStorage.getItem('midLocations'));
-    // const millis = [];
+    // if (midLocations) {
+    //   const millis = [];
 
-    // const locs = midLocations.map((ele) => {
-    //   const latlng = ele.location;
-    //   const time = ele.time;
-    //   const notices = ele.notices;
+    //   const locs = midLocations.map((ele) => {
+    //     const latlng = ele.location;
+    //     const time = ele.time;
+    //     const notices = ele.notices;
 
-    //   service.reverseGeocode(
-    //     { at: `${latlng.lat},${latlng.lng}` },
-    //     (result) => {
-    //       const location = result.items[0].address.label;
-    //       millis.push({ location, time, notices });
-    //     }
-    //   );
+    //     service.reverseGeocode(
+    //       { at: `${latlng.lat},${latlng.lng}` },
+    //       (result) => {
+    //         const location = result.items[0].address.label;
+    //         millis.push({ location, time, notices });
+    //       }
+    //     );
 
-    //   return { time, notices };
-    // });
+    //     return { time, notices };
+    //   });
 
-    // setTimeout(() => {
-    //   console.log(millis);
-    //   localStorage.setItem('midLocations', JSON.stringify(millis));
-    // }, 4000);
+    //   setTimeout(() => {
+    //     console.log(millis);
+    //     localStorage.setItem('midLocations', JSON.stringify(millis));
+    //   }, 4000);
+    // }
 
     // This will act as a cleanup to run once this hook runs again.
     // This includes when the component un-mounts
@@ -140,6 +142,7 @@ function createRoute(
         });
 
         // setMidLocations(midLocationsProp);
+        // localStorage.setItem('midLocations', JSON.stringify(midLocationsProp));
 
         const lineStrings = [];
         sections.forEach((section) => {
