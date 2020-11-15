@@ -4,7 +4,7 @@ import { useCallbackRef } from 'use-callback-ref';
 
 import addMarkers from './addMarkers';
 
-const DisplayMap = ({ markers, setCurrMarker, query }) => {
+const DisplayMap = ({ markers, setCurrMarker, query, setMidLocations }) => {
   // Create a reference to the HTML element we want to put the map on
   const mapRef = useCallbackRef(null, (ref) => ref && ref.focus());
 
@@ -29,6 +29,8 @@ const DisplayMap = ({ markers, setCurrMarker, query }) => {
       pixelRatio: window.devicePixelRatio || 1,
     });
 
+    const midLocationsProp = {};
+
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
@@ -40,18 +42,51 @@ const DisplayMap = ({ markers, setCurrMarker, query }) => {
     // Add markers
     addMarkers(hMap, H, ui, markers, setCurrMarker);
 
-    // // Create routes
-    // createRoute(H, hMap, query, service, markers, router);
-
     // Get user location
-    getUserLocation(H, hMap, query, markers, router, service);
+    getUserLocation(
+      H,
+      hMap,
+      query,
+      markers,
+      router,
+      service,
+      midLocationsProp,
+      setMidLocations
+    );
+
+    // Get reverse location from query
+    // getRevLocation(service, JSON.parse(localStorage.getItem('midLocations')));
+
+    // const midLocations = JSON.parse(localStorage.getItem('midLocations'));
+    // const millis = [];
+
+    // const locs = midLocations.map((ele) => {
+    //   const latlng = ele.location;
+    //   const time = ele.time;
+    //   const notices = ele.notices;
+
+    //   service.reverseGeocode(
+    //     { at: `${latlng.lat},${latlng.lng}` },
+    //     (result) => {
+    //       const location = result.items[0].address.label;
+    //       millis.push({ location, time, notices });
+    //     }
+    //   );
+
+    //   return { time, notices };
+    // });
+
+    // setTimeout(() => {
+    //   console.log(millis);
+    //   localStorage.setItem('midLocations', JSON.stringify(millis));
+    // }, 4000);
 
     // This will act as a cleanup to run once this hook runs again.
     // This includes when the component un-mounts
     return () => {
       hMap.dispose();
     };
-  }, [mapRef, markers, setCurrMarker, query]); // This will run this hook every time this ref is updated
+  }, [mapRef, markers, setCurrMarker, query, setMidLocations]); // This will run this hook every time this ref is updated
 
   return (
     <div
@@ -64,7 +99,16 @@ const DisplayMap = ({ markers, setCurrMarker, query }) => {
 
 export default DisplayMap;
 
-function createRoute(H, hMap, markers, userLocation, router) {
+function createRoute(
+  H,
+  hMap,
+  markers,
+  userLocation,
+  router,
+  service,
+  midLocationsProp,
+  setMidLocations
+) {
   let locString = '48.86,2.31';
   if (userLocation) {
     locString = `${userLocation.lat},${userLocation.lng}`;
@@ -85,8 +129,18 @@ function createRoute(H, hMap, markers, userLocation, router) {
     },
     (result) => {
       console.log(result);
+
       if (result.routes.length !== 0) {
         const sections = result.routes[0].sections;
+        midLocationsProp = sections.map((ele) => {
+          const location = ele.arrival.place.location;
+          const time = ele.arrival.time;
+          const notices = ele.notices;
+          return { location, time, notices };
+        });
+
+        // setMidLocations(midLocationsProp);
+
         const lineStrings = [];
         sections.forEach((section) => {
           // convert Flexible Polyline encoded string to geometry
@@ -108,7 +162,16 @@ function createRoute(H, hMap, markers, userLocation, router) {
   );
 }
 
-function getUserLocation(H, hMap, query, markers, router, service) {
+function getUserLocation(
+  H,
+  hMap,
+  query,
+  markers,
+  router,
+  service,
+  midLocationsProp,
+  setMidLocations
+) {
   let userLocation;
 
   service.geocode(
@@ -121,9 +184,38 @@ function getUserLocation(H, hMap, query, markers, router, service) {
       hMap.addObject(new H.map.Marker(result.items[0].position));
       userLocation = result.items[0].position;
 
-      createRoute(H, hMap, markers, userLocation, router);
+      createRoute(
+        H,
+        hMap,
+        markers,
+        userLocation,
+        router,
+        service,
+        midLocationsProp,
+        setMidLocations
+      );
     }
   );
 
   return userLocation;
+}
+
+function getRevLocation(service, midLocations) {
+  console.log(midLocations);
+  const locs = midLocations.map((ele) => {
+    const latlng = ele.location;
+    const time = ele.time;
+    const notices = ele.notices;
+    let location = {};
+
+    service.reverseGeocode({ at: `${latlng.lat},${latlng.lng}` }, (result) => {
+      location = result.items[0].address.label;
+    });
+
+    // setTimeout(() => {}, 1000);
+
+    return { location, time, notices };
+  });
+
+  console.log(locs);
 }

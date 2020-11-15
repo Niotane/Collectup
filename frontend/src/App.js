@@ -18,9 +18,12 @@ import {
   Footer,
   Anchor,
   Header,
+  Calendar,
+  List,
 } from 'grommet';
 import { Notification, Favorite, ShareOption } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import ta from 'time-ago';
 
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
@@ -60,8 +63,18 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [currMarker, setCurrMarker] = useState({});
   const [query, setQuery] = useState('');
+  const [midLocation, setMidLocations] = useState([]);
 
   useEffect(() => {
+    let midLocations = JSON.parse(localStorage.getItem('midLocations'));
+    midLocations = midLocations.map((loc) => {
+      const relTime = ta.ago(loc.time);
+      console.log(relTime);
+      return { ...loc, time: relTime };
+    });
+
+    setMidLocations(midLocations);
+
     const getMapMarkers = async () => {
       const response = await sendRequest('/location');
       if (response) {
@@ -72,6 +85,7 @@ function App() {
     getMapMarkers();
   }, [sendRequest]);
 
+  console.log(currMarker);
   return (
     <Grommet theme={theme} themeMode='dark' full>
       <AppBar>
@@ -88,6 +102,7 @@ function App() {
               setCurrMarker={setCurrMarker}
               query={query}
               key={query}
+              setMidLocations={setMidLocations}
             />
           </Box>
         </Suspense>
@@ -98,7 +113,7 @@ function App() {
         background='dark-2'
         align='baseline'
         justify='evenly'
-        height='300px'
+        height='600px'
         pad='2em'
       >
         <Form
@@ -122,25 +137,46 @@ function App() {
           </Box>
         </Form>
         <Box flex direction='row' justify='evenly' background='dark-2'>
-          <Box gap='0.5vw' alignSelf='start'>
-            <Text weight='bold'> Current time: </Text>
-            <br />
-            <Clock type='digital' size='xxlarge' />
+          <Box gap='0.5vw'>
+            <Text weight='bold' size='large' color='#6FFFB0'>
+              TIMELINE
+            </Text>
+            <List
+              primaryKey='location'
+              secondaryKey='time'
+              data={midLocation}
+            />
           </Box>
-          <Box gap='0.5vw' justify='end'>
-            <Text weight='bold'> Journey progress: </Text>
-            <br />
-            <Meter
-              type='circle'
-              values={[
-                {
-                  value: 60,
-                  label: 'sixty',
-                  onClick: () => {},
-                },
-              ]}
-              aria-label='meter'
-              size='xsmall'
+          <Box direction='column' gap='2vw'>
+            <Box gap='0.5vw' alignSelf='start'>
+              <Text weight='bold' size='large' color='#6FFFB0'>
+                CURRENT TIME
+              </Text>
+              <Clock type='digital' size='xxlarge' />
+            </Box>
+            <Box gap='0.5vw'>
+              <Text weight='bold' size='large' color='#6FFFB0'>
+                JOURNEY PROGRESS
+              </Text>
+              <Meter
+                type='circle'
+                values={[
+                  {
+                    value: 60,
+                    label: 'sixty',
+                    onClick: () => {},
+                  },
+                ]}
+                aria-label='meter'
+                size='xsmall'
+              />
+            </Box>
+          </Box>
+          <Box gap='0.5vw'>
+            <Calendar
+              size='medium'
+              date={new Date().toISOString()}
+              onSelect={(date) => {}}
             />
           </Box>
         </Box>
