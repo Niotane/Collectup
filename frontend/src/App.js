@@ -1,10 +1,11 @@
 import './App.css';
+import { useEffect, useState, Suspense } from 'react';
 import { Grommet, Button, Heading, Box } from 'grommet';
 import { Notification } from 'grommet-icons';
-import { useAPI } from './util/useAPI';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 import DisplayMap from './Map/DisplayMap';
-import { useEffect, useState } from 'react';
+import { useAPI } from './util/useAPI';
 
 const theme = {
   global: {
@@ -20,10 +21,25 @@ const theme = {
 };
 
 const AppBar = (props) => {
-  const [sendRequest, isLoading] = useAPI();
-  const [markersList, setMarkersList] = useState();
+  return (
+    <Box
+      tag='header'
+      direction='row'
+      align='center'
+      justify='between'
+      background='brand'
+      pad={{ left: 'medium', right: 'small', vertical: 'small' }}
+      elevation='medium'
+      style={{ zIndex: '1' }}
+      {...props}
+    />
+  );
+};
 
-  console.log(markersList);
+function App() {
+  const [sendRequest] = useAPI();
+  const [markersList, setMarkersList] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const getMapMarkers = async () => {
@@ -31,50 +47,33 @@ const AppBar = (props) => {
       if (response) {
         setMarkersList(response.data);
       }
+      setLoading(false);
     };
     getMapMarkers();
   }, [sendRequest]);
 
-  if (!isLoading) {
-    return (
-      <Box
-        tag='header'
-        direction='row'
-        align='center'
-        justify='between'
-        background='brand'
-        pad={{ left: 'medium', right: 'small', vertical: 'small' }}
-        elevation='medium'
-        style={{ zIndex: '1' }}
-        {...props}
-      />
-    );
-  } else return null;
-};
-
-function App() {
   return (
     <Grommet theme={theme} themeMode='dark' full>
       <Box fill>
         <AppBar>
           <Heading level='2' margin='none'>
-            Collect.io
+            CollectUp.io
           </Heading>
           <Button icon={<Notification />} onClick={() => {}} />
         </AppBar>
-        <Box direction='row' flex overflow={{ horizontal: 'hidden' }}>
-          <Box flex align='center' justify='start'>
-            <DisplayMap />
+        <Suspense fallback={<ScaleLoader loading={isLoading} />}>
+          <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
+            <DisplayMap markers={markersList} />
           </Box>
-          {/* <Box
-            width='medium'
-            background='light-2'
-            elevation='small'
-            align='center'
-            justify='center'
-          >
-            sidebar
-          </Box> */}
+        </Suspense>
+        <Box
+          flex
+          direction='row'
+          background='light-2'
+          align='center'
+          justify='center'
+        >
+          Info bar
         </Box>
       </Box>
     </Grommet>

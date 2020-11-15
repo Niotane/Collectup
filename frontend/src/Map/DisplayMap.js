@@ -1,25 +1,24 @@
 import './mapsui.css';
-import * as React from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 import addMarkers from './addMarkers';
 
-const DisplayMap = () => {
+const DisplayMap = ({ markers }) => {
   // Create a reference to the HTML element we want to put the map on
-  const mapRef = React.useRef(null);
+  const mapRef = useRef(null);
 
   /**
    * Create the map instance
    * While `useEffect` could also be used here, `useLayoutEffect` will render
    * the map sooner
    */
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     // `mapRef.current` will be `undefined` when this hook first runs; edge case that
     if (!mapRef.current) return;
 
     const H = window.H;
     const platform = new H.service.Platform({
-      app_id: 'bIkphHOZuBbetuKzgtyc',
-      apikey: 'nb-psgXH-zr1x8yBLdFEJWxV_s2RLQ9dlJst_oh-bac',
+      apikey: process.env.REACT_APP_HERE_API_KEY,
     });
     const defaultLayers = platform.createDefaultLayers();
 
@@ -30,7 +29,7 @@ const DisplayMap = () => {
     });
 
     // Add markers
-    addMarkers(hMap, H);
+    addMarkers(hMap, H, markers);
 
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
@@ -41,13 +40,13 @@ const DisplayMap = () => {
     return () => {
       hMap.dispose();
     };
-  }, [mapRef]); // This will run this hook every time this ref is updated
+  }, [mapRef, markers]); // This will run this hook every time this ref is updated
 
   return (
     <div
       className='map'
       ref={mapRef}
-      style={{ height: '40vw', width: '100%' }}
+      style={{ height: '100%', width: '100%' }}
     />
   );
 };

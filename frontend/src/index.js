@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback={<ScaleLoader />}>
+      <App />
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,10 +1,7 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useCallback, useEffect, useRef } from 'react';
 
 export const useAPI = () => {
   const BACKEND_ADDRESS = 'http://localhost:5000';
-  const [isLoading, setIsLoading] = useState(false);
-  const history = useHistory();
   const activeRequests = useRef([]);
 
   const sendRequest = useCallback(
@@ -14,8 +11,6 @@ export const useAPI = () => {
       body = null,
       headers = { 'Content-Type': 'application/json' }
     ) => {
-      setIsLoading(true);
-
       if (body) {
         body = JSON.stringify(body);
       }
@@ -38,13 +33,12 @@ export const useAPI = () => {
           throw new Error('Error while fetching data from backend');
         }
 
-        setIsLoading(false);
         return responseData;
       } catch (err) {
         throw err;
       }
     },
-    [history]
+    []
   );
 
   useEffect(() => {
@@ -55,5 +49,5 @@ export const useAPI = () => {
     };
   }, []);
 
-  return [sendRequest, isLoading];
+  return [sendRequest];
 };
