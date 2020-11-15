@@ -7,8 +7,8 @@ import getCustomMarker from './customMarker';
  * @param  {H}        H                   A HERE instance
  * @param  {List}     markers             A list of markers
  */
-async function addMarkersToMap(map, H, markers) {
-  const domIcon = getCustomMarker(H);
+async function addMarkersToMap(map, H, ui, markers, setCurrMarker) {
+  const domIcon = getCustomMarker(H, ui, setCurrMarker);
 
   markers.forEach(marker => {
     const position = marker.location;

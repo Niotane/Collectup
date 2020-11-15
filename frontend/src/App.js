@@ -40,6 +40,7 @@ function App() {
   const [sendRequest] = useAPI();
   const [markersList, setMarkersList] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [currMarker, setCurrMarker] = useState({});
 
   useEffect(() => {
     const getMapMarkers = async () => {
@@ -63,7 +64,7 @@ function App() {
         </AppBar>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
-            <DisplayMap markers={markersList} />
+            <DisplayMap markers={markersList} setCurrMarker={setCurrMarker} />
           </Box>
         </Suspense>
         <Box
