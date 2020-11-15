@@ -9,8 +9,10 @@ const itemSchema = new mongoose.Schema({
   address: { type: String, required: true },
   location: {
     lat: { type: Number, required: true },
-    long: { type: Number, required: true },
+    lng: { type: Number, required: true },
   },
+  category: { type: String, required: true },
+  city: { type: String, required: true },
   image: String,
   isCollected: { type: Boolean, required: true },
 });

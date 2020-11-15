@@ -2,22 +2,33 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const Item = require('./models/items');
+const cors = require('cors');
 
 // set up socket.io for live chat
 const app = express();
 
 app.use(bodyParser.json());
 
-// Boilerplate to bypass CORS
-app.use((req, res, next) => {
-  res.set({
-    'Access-Control-Allow-Origin': req.headers.origin,
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Headers': 'Content-Type, *',
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE',
-  });
+app.use(cors());
 
-  next();
+// returns the coords of all registered items
+app.get('/location', async (req, res, next) => {
+  let data;
+
+  try {
+    data = await Item.find({}, { location: 1, category: 1 });
+  } catch (err) {
+    console.log(err);
+  }
+  res.json({ data });
+});
+
+app.post('/details', (req, res) => {
+  const location = req.body.location;
+
+  Item.find({ location })
+    .then((data) => res.json({ data }))
+    .catch((err) => console.log(err));
 });
 
 // retrieve all listings by default. allows user to specify a country
@@ -42,6 +53,8 @@ app.post('/', (req, res) => {
     country,
     address,
     location,
+    category,
+    city,
   } = req.body;
 
   const newItem = Item({
@@ -52,6 +65,8 @@ app.post('/', (req, res) => {
     country,
     address,
     location,
+    category,
+    city,
     isCollected: false,
   });
 

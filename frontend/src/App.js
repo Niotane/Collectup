@@ -1,8 +1,10 @@
 import './App.css';
 import { Grommet, Button, Heading, Box } from 'grommet';
 import { Notification } from 'grommet-icons';
+import { useAPI } from './util/useAPI';
 
 import DisplayMap from './Map/DisplayMap';
+import { useEffect, useState } from 'react';
 
 const theme = {
   global: {
@@ -18,20 +20,38 @@ const theme = {
 };
 
 const AppBar = (props) => {
-  return (
-    <Box
-      tag='header'
-      direction='row'
-      align='center'
-      justify='between'
-      background='brand'
-      pad={{ left: 'medium', right: 'small', vertical: 'small' }}
-      elevation='medium'
-      style={{ zIndex: '1' }}
-      {...props}
-    />
-  );
+  const [sendRequest, isLoading] = useAPI();
+  const [markersList, setMarkersList] = useState();
+
+  console.log(markersList);
+
+  useEffect(() => {
+    const getMapMarkers = async () => {
+      const response = await sendRequest('/location');
+      if (response) {
+        setMarkersList(response.data);
+      }
+    };
+    getMapMarkers();
+  }, [sendRequest]);
+
+  if (!isLoading) {
+    return (
+      <Box
+        tag='header'
+        direction='row'
+        align='center'
+        justify='between'
+        background='brand'
+        pad={{ left: 'medium', right: 'small', vertical: 'small' }}
+        elevation='medium'
+        style={{ zIndex: '1' }}
+        {...props}
+      />
+    );
+  } else return null;
 };
+
 function App() {
   return (
     <Grommet theme={theme} themeMode='dark' full>
