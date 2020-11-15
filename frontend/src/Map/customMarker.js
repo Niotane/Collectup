@@ -8,7 +8,7 @@ function changeOpacityToOne(evt) {
 
 function showInfo(H, ui, domMarker, setCurrMarker) {
   console.log(domMarker.data);
-  let table = `<table><tr>`;
+  let table = `<table border=1 padding=1><tr>`;
   Object.keys(domMarker.data).forEach((key) => {
     if (key !== '_id' && key !== '__v' && key !== 'imageURL') {
       table += `<th>${key}</th>`;
