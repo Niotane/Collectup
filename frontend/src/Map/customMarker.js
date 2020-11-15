@@ -8,7 +8,9 @@ function changeOpacityToOne(evt) {
   evt.target.style.opacity = 1;
 }
 
-function showInfo(evt) {}
+function showInfo(domMarker) {
+  console.log(domMarker.data);
+}
 
 const getCustomMarker = (H) => {
   const markerb64 =
@@ -25,7 +27,8 @@ const getCustomMarker = (H) => {
     onAttach: function (clonedElement, domIcon, domMarker) {
       clonedElement.addEventListener('mouseover', changeOpacity);
       clonedElement.addEventListener('mouseout', changeOpacityToOne);
-      clonedElement.addEventListener('mouseclick', Tip);
+      clonedElement.addEventListener('click', () => showInfo(domMarker));
+      // console.log(domMarker);
     },
     // the function is called every time marker leaves the viewport
     onDetach: function (clonedElement, domIcon, domMarker) {

@@ -13,6 +13,7 @@ async function addMarkersToMap(map, H, markers) {
   markers.forEach(marker => {
     const position = marker.location;
     const loc = new H.map.DomMarker(position, { icon: domIcon });
+    loc.setData(marker);
     map.addObject(loc);
   });
 }
