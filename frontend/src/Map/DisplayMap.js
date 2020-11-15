@@ -1,11 +1,12 @@
 import './mapsui.css';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallbackRef } from 'use-callback-ref';
 
 import addMarkers from './addMarkers';
 
-const DisplayMap = ({ markers, setCurrMarker }) => {
+const DisplayMap = ({ markers, setCurrMarker, query }) => {
   // Create a reference to the HTML element we want to put the map on
-  const mapRef = useRef(null);
+  const mapRef = useCallbackRef(null, (ref) => ref && ref.focus());
 
   /**
    * Create the map instance
@@ -32,19 +33,25 @@ const DisplayMap = ({ markers, setCurrMarker }) => {
 
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
 
+    const router = platform.getRoutingService(null, 8);
+
+    const service = platform.getSearchService();
+
     // Add markers
     addMarkers(hMap, H, ui, markers, setCurrMarker);
 
-    let router = platform.getRoutingService(null, 8);
+    // // Create routes
+    // createRoute(H, hMap, query, service, markers, router);
 
-    createRoute(H, hMap, markers, router);
+    // Get user location
+    getUserLocation(H, hMap, query, markers, router, service);
 
     // This will act as a cleanup to run once this hook runs again.
     // This includes when the component un-mounts
     return () => {
       hMap.dispose();
     };
-  }, [mapRef, markers, setCurrMarker]); // This will run this hook every time this ref is updated
+  }, [mapRef, markers, setCurrMarker, query]); // This will run this hook every time this ref is updated
 
   return (
     <div
@@ -57,39 +64,66 @@ const DisplayMap = ({ markers, setCurrMarker }) => {
 
 export default DisplayMap;
 
-function createRoute(H, hMap, markers, router) {
+function createRoute(H, hMap, markers, userLocation, router) {
+  let locString = '48.86,2.31';
+  if (userLocation) {
+    locString = `${userLocation.lat},${userLocation.lng}`;
+  }
+
   const locations = markers.map(
     ({ location }) => `${location.lat},${location.lng}`
   );
+  console.log(locString);
 
   router.calculateRoute(
     {
-      origin: '48.86,2.31',
-      destination: '48.86,2.31',
-      // defines multiple waypoints
+      origin: locString,
+      destination: locString,
       via: new H.service.Url.MultiValueQueryParameter(locations),
-      // returns route shape as a polyline in response
       return: 'polyline',
-      transportMode: 'car',
+      transportMode: 'truck',
     },
     (result) => {
-      const sections = result.routes[0].sections;
-      const lineStrings = [];
-      sections.forEach((section) => {
-        // convert Flexible Polyline encoded string to geometry
-        lineStrings.push(
-          H.geo.LineString.fromFlexiblePolyline(section.polyline)
+      console.log(result);
+      if (result.routes.length !== 0) {
+        const sections = result.routes[0].sections;
+        const lineStrings = [];
+        sections.forEach((section) => {
+          // convert Flexible Polyline encoded string to geometry
+          lineStrings.push(
+            H.geo.LineString.fromFlexiblePolyline(section.polyline)
+          );
+        });
+        const multiLineString = new H.geo.MultiLineString(lineStrings);
+        const bounds = multiLineString.getBoundingBox();
+        // render route on the map
+        hMap.addObject(
+          new H.map.Polyline(multiLineString, { style: { lineWidth: 5 } })
         );
-      });
-      const multiLineString = new H.geo.MultiLineString(lineStrings);
-      const bounds = multiLineString.getBoundingBox();
-      // render route on the map
-      hMap.addObject(
-        new H.map.Polyline(multiLineString, { style: { lineWidth: 5 } })
-      );
-      // zoom to polyline
-      hMap.getViewModel().setLookAtData({ bounds });
+        // zoom to polyline
+        hMap.getViewModel().setLookAtData({ bounds });
+      }
     },
     console.error
   );
+}
+
+function getUserLocation(H, hMap, query, markers, router, service) {
+  let userLocation;
+
+  service.geocode(
+    {
+      q: query || 'Vienna, Austria',
+    },
+    (result) => {
+      // Add a marker for each location found
+      console.log('user location points', result);
+      hMap.addObject(new H.map.Marker(result.items[0].position));
+      userLocation = result.items[0].position;
+
+      createRoute(H, hMap, markers, userLocation, router);
+    }
+  );
+
+  return userLocation;
 }

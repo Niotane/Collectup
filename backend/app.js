@@ -89,7 +89,7 @@ app.post('/add', fileUpload.single('image', 1), (req, res) => {
 });
 
 // throws error if API not listed above
-app.use(() => {
+app.use((req, res, next) => {
   const error = new Error('API endpoint is not valid');
   error.status = 400;
   res.status(error);
