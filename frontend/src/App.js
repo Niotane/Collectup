@@ -60,7 +60,7 @@ const modalStyle = {
   content: {
     margin: 'auto',
     width: '60%',
-    background: '#555555'
+    background: '#555555',
   },
 };
 
@@ -184,6 +184,7 @@ function App() {
       </Box>
       <Button
         primary
+        size='large'
         label='Create New Post'
         style={style}
         onClick={() => {
