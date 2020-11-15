@@ -23,9 +23,12 @@ import {
 } from 'grommet';
 import { Notification, Favorite, ShareOption } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import ImageUpload from './util/ImageUpload';
 import broken from './img/brokenr.jpg';
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
+import { useForm } from './util/useForm';
+import FormView from './form';
 
 const theme = {
   global: {
@@ -40,12 +43,12 @@ const theme = {
   },
 };
 const style = {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 20,
-    left: 'auto',
-    position: 'fixed',
+  margin: 0,
+  top: 'auto',
+  right: 20,
+  bottom: 20,
+  left: 'auto',
+  position: 'fixed',
 };
 const AppBar = (props) => {
   return (
@@ -69,7 +72,50 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [currMarker, setCurrMarker] = useState({});
   const [query, setQuery] = useState('');
-  const [showForm,setShowForm] = useState(false);
+  const [form, setformState] = useState(false);
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: '',
+        isValid: false,
+      },
+      description: {
+        value: '',
+        isValid: false,
+      },
+      address: {
+        value: '',
+        isValid: false,
+      },
+      image: {
+        value: null,
+        isValid: false,
+      },
+    },
+    false
+  );
+
+  const formSubmitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      let formData = new FormData();
+      formData.append('user', 'Tim');
+      formData.append('phoneNumber', '12409124');
+      formData.append('description', 'Old furniture');
+      formData.append('address', 'test test test');
+      formData.append('country', 'China');
+      formData.append('city', 'BeiJing');
+      formData.append('category', 'Household');
+      formData.append('location', JSON.stringify({ lat: '36', lng: '105' }));
+      formData.append('image', formState.inputs.image.value);
+      const response = await fetch('http://localhost:5000/add', {
+        method: 'POST',
+        body: formData,
+      });
+      console.log('response', response);
+    } catch (err) {}
+  };
+
   useEffect(() => {
     const getMapMarkers = async () => {
       const response = await sendRequest('/location');
@@ -89,8 +135,7 @@ function App() {
         </Heading>
         <Button icon={<Notification />} onClick={() => {}} />
       </AppBar>
-    <Button primary label="Create New Post" style={style} onClick={() => {setShowForm(true) }
-    }/>
+      <Stack anchor="center">
       <Box height='60%'>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
@@ -103,6 +148,14 @@ function App() {
           </Box>
         </Suspense>
       </Box>
+     {form && <FormView /> } 
+      </Stack>
+      <Button
+      primary
+      label='Create New Post'
+      style={style}
+      onClick={() => {setformState(true)}}
+    />
       <Box
         flex
         direction='row'
@@ -164,48 +217,53 @@ function App() {
         align='baseline'
         justify='around'
         height='1000px'
-        pad='2em' 
+        pad='2em'
         wrap='true'
       >
-        <Box
-        flex='around'
-        wrap='true'
-        pad='2en' 
-        width='100%'
-        align='center'><Header> Feed </Header>  </Box>  
-         <Card height='medium' width='25%' background='light-1'  flex-justify = 'around'>
-          <CardHeader pad='small'>Name : Paul richard  </CardHeader>
-          <CardHeader pad='small'>Adress : Grainauerstrasse 3, Berlin 10777 </CardHeader>
-          <CardBody pad='small' height='10px'>Description : Broken refrigerator, in basement since 15 years and not knowing what I want to do with it. Who wants to take it ? </CardBody> 
-          <CardBody pad='small>'>Image : <Image fit='contain' src={broken}></Image></CardBody>
+        <Box flex='around' wrap='true' pad='2en' width='100%' align='center'>
+          <Header> Feed </Header>{' '}
+        </Box>
+        {markersList &&
+          markersList.map((marker) => {
+            return (
+              <Card
+                height='medium'
+                width='25%'
+                background='light-1'
+                margin='small'
+                flex-justify='around'
+              >
+                <CardHeader pad='small'>Name : {marker.user}</CardHeader>
 
-          <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
-            <Button icon={<Favorite color='red' />} hoverIndicator />
-            <Button icon={<ShareOption color='plain' />} hoverIndicator />
-          </CardFooter>
-        </Card>
-        <Card height='medium' width='25%' background='light-1' margin='small' flex-justify = 'around'>
-          <CardHeader pad='small'>Name : Elizabeth Mern </CardHeader>
-          <CardHeader pad='small'>Adress : Einzelallee 7, Berlin 10825 </CardHeader>
-          <CardBody pad='small' height='10px'>Description : Broken refrigerator since 2007 </CardBody> 
-          <CardBody pad='small>'>Image : <Image fit='contain' src={broken}></Image></CardBody>
+                <CardHeader pad='small'>
+                  Contact Number: {marker.phoneNumber}
+                </CardHeader>
+                <CardHeader pad='small'>
+                  Description: {marker.description}
+                </CardHeader>
+                <CardHeader pad='small'>
+                  User Address: {marker.address}
+                </CardHeader>
+                <CardHeader pad='small'>
+                  Listed on: {marker.dateListed}
+                </CardHeader>
+                <CardHeader pad='small'>
+                  {marker.city + ',' + marker.country}
+                </CardHeader>
+                <CardBody pad='small>'>
+                  <Image
+                    fit='contain'
+                    src={'http://localhost:5000/' + marker.imageURL}
+                  ></Image>
+                </CardBody>
 
-          <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
-            <Button icon={<Favorite color='red' />} hoverIndicator />
-            <Button icon={<ShareOption color='plain' />} hoverIndicator />
-          </CardFooter>
-        </Card>
-        <Card height='medium' width='25%' background='light-1' margin='small' flex-justify = 'around'>
-          <CardHeader pad='small'>Name : Paul richard  </CardHeader>
-          <CardHeader pad='small'>Adress : Grainauerstrasse 3, Berlin 10777 </CardHeader>
-          <CardBody pad='small' height='10px'>Description : Broken refrigerator, in basement since 15 years and not knowing what I want to do with it. Who wants to take it ? </CardBody> 
-          <CardBody pad='small>'>Image : <Image fit='contain' src={broken}></Image></CardBody>
-
-          <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
-            <Button icon={<Favorite color='red' />} hoverIndicator />
-            <Button icon={<ShareOption color='plain' />} hoverIndicator />
-          </CardFooter>
-        </Card>
+                <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
+                  <Button icon={<Favorite color='red' />} hoverIndicator />
+                  <Button icon={<ShareOption color='plain' />} hoverIndicator />
+                </CardFooter>
+              </Card>
+            );
+          })}
       </Box>
       <Footer background='brand' pad='medium'>
         <Text>Copyright</Text>

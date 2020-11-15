@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
   },
+  imageURL: { type: String, required: true },
   category: { type: String, required: true },
   city: { type: String, required: true },
   image: String,
