@@ -19,6 +19,7 @@ import {
   Anchor,
   Header,
   Image,
+  Stack,
 } from 'grommet';
 import { Notification, Favorite, ShareOption } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
@@ -68,7 +69,7 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [currMarker, setCurrMarker] = useState({});
   const [query, setQuery] = useState('');
-
+  const [showForm,setShowForm] = useState(false);
   useEffect(() => {
     const getMapMarkers = async () => {
       const response = await sendRequest('/location');
@@ -88,7 +89,8 @@ function App() {
         </Heading>
         <Button icon={<Notification />} onClick={() => {}} />
       </AppBar>
-    <Button primary label="Create New Post" style={style} onClick={() => {}}/>
+    <Button primary label="Create New Post" style={style} onClick={() => {setShowForm(true) }
+    }/>
       <Box height='60%'>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
