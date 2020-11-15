@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef } from 'react';
 
 import addMarkers from './addMarkers';
 
-const DisplayMap = ({ markers }) => {
+const DisplayMap = ({ markers, setCurrMarker }) => {
   // Create a reference to the HTML element we want to put the map on
   const mapRef = useRef(null);
 
@@ -28,19 +28,20 @@ const DisplayMap = ({ markers }) => {
       pixelRatio: window.devicePixelRatio || 1,
     });
 
-    // Add markers
-    addMarkers(hMap, H, markers);
-
+    
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
-
+    
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
+    
+    // Add markers
+    addMarkers(hMap, H, ui, markers, setCurrMarker);
 
     // This will act as a cleanup to run once this hook runs again.
     // This includes when the component un-mounts
     return () => {
       hMap.dispose();
     };
-  }, [mapRef, markers]); // This will run this hook every time this ref is updated
+  }, [mapRef, markers, setCurrMarker]); // This will run this hook every time this ref is updated
 
   return (
     <div
