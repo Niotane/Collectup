@@ -7,14 +7,6 @@ function changeOpacityToOne(evt) {
 }
 
 function showInfo(H, ui, domMarker, setCurrMarker) {
-  //const location = domMarker.data.location;
-  //console.log(location);
-  fetch('http://localhost:5000/details', {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: { location: domMarker.data.location },
-  }).then((data) => console.log(data));
-
   const bubble = new H.ui.InfoBubble(domMarker.data.location, {
     content: JSON.stringify(domMarker.data),
   });

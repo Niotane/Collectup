@@ -3,9 +3,11 @@ import { useEffect, useState, Suspense } from 'react';
 import { Grommet, Button, Heading, Box } from 'grommet';
 import { Notification } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import ImageUpload from './util/ImageUpload';
 
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
+import { useForm } from './util/useForm';
 
 const theme = {
   global: {
@@ -42,6 +44,49 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const [currMarker, setCurrMarker] = useState({});
 
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: '',
+        isValid: false,
+      },
+      description: {
+        value: '',
+        isValid: false,
+      },
+      address: {
+        value: '',
+        isValid: false,
+      },
+      image: {
+        value: null,
+        isValid: false,
+      },
+    },
+    false
+  );
+
+  const formSubmitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      let formData = new FormData();
+      formData.append('user', 'Tim');
+      formData.append('phoneNumber', '12409124');
+      formData.append('description', 'Old furniture');
+      formData.append('address', 'test test test');
+      formData.append('country', 'China');
+      formData.append('city', 'BeiJing');
+      formData.append('category', 'Household');
+      formData.append('location', JSON.stringify({ lat: '36', lng: '105' }));
+      formData.append('image', formState.inputs.image.value);
+      const response = await fetch('http://localhost:5000/add', {
+        method: 'POST',
+        body: formData,
+      });
+      console.log('response', response);
+    } catch (err) {}
+  };
+
   useEffect(() => {
     const getMapMarkers = async () => {
       const response = await sendRequest('/location');
@@ -60,7 +105,10 @@ function App() {
           <Heading level='2' margin='none'>
             CollectUp.io
           </Heading>
-          <Button icon={<Notification />} onClick={() => {}} />
+          <form className='place-form' onSubmit={formSubmitHandler}>
+            <ImageUpload id='image' onInput={inputHandler} />
+            <Button type='submit'>Post</Button>
+          </form>
         </AppBar>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
