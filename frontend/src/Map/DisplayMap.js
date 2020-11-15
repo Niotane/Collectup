@@ -56,6 +56,7 @@ const DisplayMap = ({ markers, setCurrMarker, query, setMidLocations }) => {
 
     // Get reverse location from query
     // getRevLocation(service, JSON.parse(localStorage.getItem('midLocations')));
+    // getRevLocation(service, midLocationsProp);
 
     // const midLocations = JSON.parse(localStorage.getItem('midLocations'));
     // if (midLocations) {
@@ -134,14 +135,15 @@ function createRoute(
 
       if (result.routes.length !== 0) {
         const sections = result.routes[0].sections;
-        midLocationsProp = sections.map((ele) => {
+        const midLocations = sections.map((ele) => {
           const location = ele.arrival.place.location;
           const time = ele.arrival.time;
           const notices = ele.notices;
           return { location, time, notices };
         });
 
-        // setMidLocations(midLocationsProp);
+        // setMidLocations(midLocations);
+        getRevLocation(service, midLocations);
         // localStorage.setItem('midLocations', JSON.stringify(midLocationsProp));
 
         const lineStrings = [];
@@ -203,22 +205,55 @@ function getUserLocation(
   return userLocation;
 }
 
-function getRevLocation(service, midLocations) {
-  console.log(midLocations);
-  const locs = midLocations.map((ele) => {
+function getRevLocation(service, midLocationsProp) {
+  console.log(midLocationsProp);
+  let locations = [];
+
+  const locs = midLocationsProp.map((ele) => {
     const latlng = ele.location;
     const time = ele.time;
     const notices = ele.notices;
-    let location = {};
 
     service.reverseGeocode({ at: `${latlng.lat},${latlng.lng}` }, (result) => {
-      location = result.items[0].address.label;
+      locations.push(result.items[0].address.label);
     });
 
-    // setTimeout(() => {}, 1000);
-
-    return { location, time, notices };
+    return { location: {}, time, notices };
   });
 
-  console.log(locs);
+  setTimeout(() => {
+    const updatedLocs = locs.map((loc, index) => {
+      return { ...loc, location: locations[index] };
+    });
+    console.log(updatedLocs);
+    localStorage.setItem('midLocations', JSON.stringify(updatedLocs));
+  }, 4000);
+
+  // const midLocations = JSON.parse(localStorage.getItem('midLocations'));
+  //   if (locs) {
+  //     const millis = [];
+
+  //     const locs = midLocations.map((ele) => {
+  //       const latlng = ele.location;
+  //       const time = ele.time;
+  //       const notices = ele.notices;
+
+  //       service.reverseGeocode(
+  //         { at: `${latlng.lat},${latlng.lng}` },
+  //         (result) => {
+  //           const location = result.items[0].address.label;
+  //           millis.push({ location, time, notices });
+  //         }
+  //       );
+
+  //       return { time, notices };
+  //     });
+
+  //     setTimeout(() => {
+  //       console.log(millis);
+  //       localStorage.setItem('midLocations', JSON.stringify(millis));
+  //     }, 4000);
+  //   }
+
+  // console.log(locs);
 }
