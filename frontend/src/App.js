@@ -289,21 +289,28 @@ function App() {
                 margin='small'
                 flex-justify='around'
               >
-                <CardHeader pad='small'>Name : {marker.user}</CardHeader>
-
                 <CardHeader pad='small'>
-                  Contact Number: {marker.phoneNumber}
+                  <b>Name : </b>
+                  {marker.user}
                 </CardHeader>
                 <CardHeader pad='small'>
-                  Description: {marker.description}
+                  <b>Contact Number: </b>
+                  {marker.phoneNumber}
                 </CardHeader>
                 <CardHeader pad='small'>
-                  User Address: {marker.address}
+                  <b>Description: </b>
+                  {marker.description}
                 </CardHeader>
                 <CardHeader pad='small'>
-                  Listed on: {marker.dateListed}
+                  <b>User Address: </b>
+                  {marker.address}
                 </CardHeader>
                 <CardHeader pad='small'>
+                  <b>Listed on: </b>
+                  {marker.dateListed}
+                </CardHeader>
+                <CardHeader pad='small'>
+                  <b>Location: </b>
                   {marker.city + ',' + marker.country}
                 </CardHeader>
                 <CardBody pad='small>'>
