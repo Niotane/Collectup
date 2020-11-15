@@ -7,8 +7,22 @@ function changeOpacityToOne(evt) {
 }
 
 function showInfo(H, ui, domMarker, setCurrMarker) {
+  console.log(domMarker.data);
+  let table = `<table><tr>`;
+  Object.keys(domMarker.data).forEach((key) => {
+    if (key !== '_id' && key !== 'isCollected	__v') {
+      table += `<th>${key}</th>`;
+    }
+  });
+  table += '</tr><tr>';
+  Object.keys(domMarker.data).forEach((key) => {
+    if (key !== '_id' && key !== 'isCollected	__v') {
+      table += `<td>${JSON.stringify(domMarker.data[key])}</td>`;
+    }
+  });
+  table += '</tr></table>';
   const bubble = new H.ui.InfoBubble(domMarker.data.location, {
-    content: JSON.stringify(domMarker.data),
+    content: table, //JSON.stringify(domMarker.data),
   });
   ui.addBubble(bubble);
   setCurrMarker(domMarker.data);
