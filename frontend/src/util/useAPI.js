@@ -23,7 +23,7 @@ export const useAPI = () => {
         method,
         body,
         headers,
-        //signal: httpAbortController.signal,
+        signal: httpAbortController.signal,
       };
       try {
         let response = await fetch(BACKEND_ADDRESS + url, requestData);
