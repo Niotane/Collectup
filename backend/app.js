@@ -3,13 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Item = require('./models/items');
 const cors = require('cors');
+const fileUpload = require('./fileUpload');
 
 const app = express();
 
 app.use(cors());
 
 //app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.raw());
+app.use(bodyParser.json());
 
 // returns the coords of all registered items
 app.get('/location', (req, res, next) => {
@@ -21,6 +22,7 @@ app.get('/location', (req, res, next) => {
 // retrieve all listings by default. comes with filters that allows user to specify a category
 app.get('/filter', async (req, res) => {
   const queries = req.query;
+  console.log(queries);
 
   let categoryQuery = {};
   if (queries.category) {
@@ -47,9 +49,12 @@ app.get('/filter', async (req, res) => {
   res.json({ data });
 });
 
+// images folder host photos
+app.use('/images', express.static('images'));
+
 // add new post
-app.post('/', (req, res) => {
-  const {
+app.post('/add', fileUpload.single('image', 1), (req, res) => {
+  let {
     user,
     phoneNumber,
     description,
@@ -60,9 +65,13 @@ app.post('/', (req, res) => {
     city,
   } = req.body;
 
+  location = JSON.parse(location);
+  const imageURL = req.file.path;
+
   const newItem = Item({
     user,
     phoneNumber,
+    imageURL,
     description,
     dateListed: new Date(),
     country,
@@ -80,7 +89,7 @@ app.post('/', (req, res) => {
 });
 
 // throws error if API not listed above
-app.use(() => {
+app.use((req, res, next) => {
   const error = new Error('API endpoint is not valid');
   error.status = 400;
   res.status(error);
