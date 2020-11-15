@@ -4,47 +4,58 @@ const mongoose = require('mongoose');
 const Item = require('./models/items');
 const cors = require('cors');
 
-// set up socket.io for live chat
 const app = express();
-
-app.use(bodyParser.json());
 
 app.use(cors());
 
+//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.raw());
+
 // returns the coords of all registered items
-app.get('/location', async (req, res, next) => {
-  let data;
-
-  try {
-    data = await Item.find({}, { location: 1, category: 1 });
-  } catch (err) {
-    console.log(err);
-  }
-  res.json({ data });
-});
-
-app.post('/details', (req, res) => {
-  const location = req.body.location;
-
-  Item.find({ location })
+app.get('/location', (req, res, next) => {
+  Item.find({}, { location: 1, category: 1 })
     .then((data) => res.json({ data }))
     .catch((err) => console.log(err));
 });
 
-// retrieve all listings by default. allows user to specify a country
-app.get('/', async (req, res) => {
+app.patch('/details', (req, res, next) => {
+  const location = req.body.location;
+  console.log('req', req);
+  Item.find({ location })
+    .then((data) => console.log({ data }))
+    .catch((err) => console.log(err));
+});
+
+// retrieve all listings by default. comes with filters that allows user to specify a category
+app.get('/filter', async (req, res) => {
   const queries = req.query;
+
+  let categoryQuery = {};
+  if (queries.category) {
+    categories = queries.category.replace(/-/g, '').split('%');
+    categoryQuery = { category: { $in: categories } };
+  }
 
   let countryQuery = {};
   if (queries.country) {
     countryQuery = {
-      country: { $in: queries.country },
+      country: { $eq: queries.country },
     };
   }
 
-  res.json({ hi: 'hi' });
+  let data;
+  try {
+    data = await Item.aggregate([
+      { $match: { $and: [categoryQuery, countryQuery] } },
+    ]);
+  } catch (err) {
+    throw err;
+  }
+
+  res.json({ data });
 });
 
+// add new post
 app.post('/', (req, res) => {
   const {
     user,
@@ -76,9 +87,11 @@ app.post('/', (req, res) => {
     .catch((err) => console.log(err.message));
 });
 
+// throws error if API not listed above
 app.use(() => {
   const error = new Error('API endpoint is not valid');
   error.status = 400;
+  res.status(error);
 });
 
 // password = 4OLRNDV8YzIKc9Vr

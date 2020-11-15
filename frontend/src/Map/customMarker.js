@@ -9,7 +9,13 @@ function changeOpacityToOne(evt) {
 }
 
 function showInfo(domMarker) {
-  console.log(domMarker.data);
+  //const location = domMarker.data.location;
+  //console.log(location);
+  fetch('http://localhost:5000/details', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: { location: domMarker.data.location },
+  }).then((data) => console.log(data));
 }
 
 const getCustomMarker = (H) => {
