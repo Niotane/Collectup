@@ -18,10 +18,11 @@ import {
   Footer,
   Anchor,
   Header,
+  Image,
 } from 'grommet';
 import { Notification, Favorite, ShareOption } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-
+import broken from './img/brokenr.jpg';
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
 
@@ -37,7 +38,14 @@ const theme = {
     },
   },
 };
-
+const style = {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
+};
 const AppBar = (props) => {
   return (
     <Box
@@ -80,6 +88,7 @@ function App() {
         </Heading>
         <Button icon={<Notification />} onClick={() => {}} />
       </AppBar>
+    <Button primary label="Create New Post" style={style} onClick={() => {}}/>
       <Box height='60%'>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
@@ -98,7 +107,7 @@ function App() {
         background='dark-2'
         align='baseline'
         justify='evenly'
-        height='300px'
+        height='200px'
         pad='2em'
       >
         <Form
@@ -116,6 +125,7 @@ function App() {
           >
             <TextInput id='text-input' name='address' />
           </FormField>
+
           <Box direction='row' gap='medium'>
             <Button type='submit' primary label='Submit' />
             <Button type='reset' label='Reset' />
@@ -146,50 +156,49 @@ function App() {
         </Box>
       </Box>
       <Box
-        flex
+        flex='around'
         direction='row'
         background='dark-1'
         align='baseline'
-        justify='evenly'
+        justify='around'
         height='1000px'
-        pad='2em'
+        pad='2em' 
+        wrap='true'
       >
-        <Header> User Feeds </Header>
-        <Card height='small' width='small' background='light-1'>
-          <CardHeader pad='medium'>Header</CardHeader>
-          <CardBody pad='medium'>Body</CardBody>
+        <Box
+        flex='around'
+        wrap='true'
+        pad='2en' 
+        width='100%'
+        align='center'><Header> Feed </Header>  </Box>  
+         <Card height='medium' width='25%' background='light-1'  flex-justify = 'around'>
+          <CardHeader pad='small'>Name : Paul richard  </CardHeader>
+          <CardHeader pad='small'>Adress : Grainauerstrasse 3, Berlin 10777 </CardHeader>
+          <CardBody pad='small' height='10px'>Description : Broken refrigerator, in basement since 15 years and not knowing what I want to do with it. Who wants to take it ? </CardBody> 
+          <CardBody pad='small>'>Image : <Image fit='contain' src={broken}></Image></CardBody>
+
           <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
             <Button icon={<Favorite color='red' />} hoverIndicator />
             <Button icon={<ShareOption color='plain' />} hoverIndicator />
           </CardFooter>
         </Card>
-        <Card height='small' width='small' background='light-1'>
-          <CardHeader pad='medium'>Header</CardHeader>
-          <CardBody pad='medium'>Body</CardBody>
+        <Card height='medium' width='25%' background='light-1' margin='small' flex-justify = 'around'>
+          <CardHeader pad='small'>Name : Elizabeth Mern </CardHeader>
+          <CardHeader pad='small'>Adress : Einzelallee 7, Berlin 10825 </CardHeader>
+          <CardBody pad='small' height='10px'>Description : Broken refrigerator since 2007 </CardBody> 
+          <CardBody pad='small>'>Image : <Image fit='contain' src={broken}></Image></CardBody>
+
           <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
             <Button icon={<Favorite color='red' />} hoverIndicator />
             <Button icon={<ShareOption color='plain' />} hoverIndicator />
           </CardFooter>
         </Card>
-        <Card height='small' width='small' background='light-1'>
-          <CardHeader pad='medium'>Header</CardHeader>
-          <CardBody pad='medium'>Body</CardBody>
-          <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
-            <Button icon={<Favorite color='red' />} hoverIndicator />
-            <Button icon={<ShareOption color='plain' />} hoverIndicator />
-          </CardFooter>
-        </Card>
-        <Card height='small' width='small' background='light-1'>
-          <CardHeader pad='medium'>Header</CardHeader>
-          <CardBody pad='medium'>Body</CardBody>
-          <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
-            <Button icon={<Favorite color='red' />} hoverIndicator />
-            <Button icon={<ShareOption color='plain' />} hoverIndicator />
-          </CardFooter>
-        </Card>
-        <Card height='small' width='small' background='light-1'>
-          <CardHeader pad='medium'>Header</CardHeader>
-          <CardBody pad='medium'>Body</CardBody>
+        <Card height='medium' width='25%' background='light-1' margin='small' flex-justify = 'around'>
+          <CardHeader pad='small'>Name : Paul richard  </CardHeader>
+          <CardHeader pad='small'>Adress : Grainauerstrasse 3, Berlin 10777 </CardHeader>
+          <CardBody pad='small' height='10px'>Description : Broken refrigerator, in basement since 15 years and not knowing what I want to do with it. Who wants to take it ? </CardBody> 
+          <CardBody pad='small>'>Image : <Image fit='contain' src={broken}></Image></CardBody>
+
           <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
             <Button icon={<Favorite color='red' />} hoverIndicator />
             <Button icon={<ShareOption color='plain' />} hoverIndicator />
