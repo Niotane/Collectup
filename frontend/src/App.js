@@ -21,10 +21,10 @@ import {
   Calendar,
   List,
   Image,
-  Stack,
 } from 'grommet';
 import { Notification, Favorite, ShareOption } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import Modal from 'react-modal';
 import ta from 'time-ago';
 
 import ImageUpload from './util/ImageUpload';
@@ -33,6 +33,8 @@ import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
 import { useForm } from './util/useForm';
 import FormView from './form';
+
+// Modal.setAppElement('#root');
 
 const theme = {
   global: {
@@ -54,6 +56,18 @@ const style = {
   left: 'auto',
   position: 'fixed',
 };
+
+const modalStyle = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
 const AppBar = (props) => {
   return (
     <Box
@@ -77,7 +91,7 @@ function App() {
   const [currMarker, setCurrMarker] = useState({});
   const [query, setQuery] = useState('');
   const [midLocation, setMidLocations] = useState([]);
-  const [form, setformState] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const [formState, inputHandler] = useForm(
     {
       title: {
@@ -150,7 +164,14 @@ function App() {
         </Heading>
         <Button icon={<Notification />} onClick={() => {}} />
       </AppBar>
-      <Stack anchor="center">
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+        style={modalStyle}
+        contentLabel='User POST Form'
+      >
+        <FormView />
+      </Modal>
       <Box height='60%'>
         <Suspense fallback={<ScaleLoader loading={isLoading} />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
@@ -164,14 +185,14 @@ function App() {
           </Box>
         </Suspense>
       </Box>
-     {form && <FormView /> } 
-      </Stack>
       <Button
-      primary
-      label='Create New Post'
-      style={style}
-      onClick={() => {setformState(true)}}
-    />
+        primary
+        label='Create New Post'
+        style={style}
+        onClick={() => {
+          setIsOpen((prev) => !prev);
+        }}
+      />
       <Box
         flex
         direction='row'
