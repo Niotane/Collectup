@@ -10,13 +10,14 @@ function showInfo(H, ui, domMarker, setCurrMarker) {
   console.log(domMarker.data);
   let table = `<table><tr>`;
   Object.keys(domMarker.data).forEach((key) => {
-    if (key !== '_id' && key !== 'isCollected	__v') {
+    if (key !== '_id' && key !== '__v' && key !== 'imageURL') {
       table += `<th>${key}</th>`;
     }
   });
   table += '</tr><tr>';
   Object.keys(domMarker.data).forEach((key) => {
-    if (key !== '_id' && key !== 'isCollected	__v') {
+    console.log(key);
+    if (key !== '_id' && key !== '__v' && key !== 'imageURL') {
       table += `<td>${JSON.stringify(domMarker.data[key])}</td>`;
     }
   });
