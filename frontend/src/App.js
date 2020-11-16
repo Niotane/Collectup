@@ -27,13 +27,13 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import Modal from 'react-modal';
 import ta from 'time-ago';
 
-import broken from './img/brokenr.jpg';
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
 import { useForm } from './util/useForm';
 import FormView from './form';
 
 // Modal.setAppElement('#root');
+const BASE_URL = 'https://oxford-hackathon.el.r.appspot.com';
 
 const theme = {
   global: {
@@ -124,7 +124,7 @@ function App() {
       formData.append('category', 'Household');
       formData.append('location', JSON.stringify({ lat: '36', lng: '105' }));
       formData.append('image', formState.inputs.image.value);
-      const response = await fetch('http://localhost:5000/add', {
+      const response = await fetch(`${BASE_URL}/add`, {
         method: 'POST',
         body: formData,
       });
@@ -197,7 +197,7 @@ function App() {
         background='dark-2'
         align='baseline'
         justify='evenly'
-        height='600px'
+        height={{ min: '30vw' }}
         pad='2em'
       >
         <Form
@@ -272,12 +272,12 @@ function App() {
         background='dark-1'
         align='baseline'
         justify='around'
-        height='1000px'
+        height={{ min: '30vw' }}
         pad='2em'
         wrap='true'
       >
         <Box flex='around' wrap='true' pad='2en' width='100%' align='center'>
-          <Header> Feed </Header>{' '}
+          <Heading>Feed</Heading>
         </Box>
         {markersList &&
           markersList.map((marker) => {
@@ -307,7 +307,7 @@ function App() {
                 </CardHeader>
                 <CardHeader pad='small'>
                   <b>Listed on: </b>
-                  {marker.dateListed}
+                  {ta.ago(marker.dateListed)}
                 </CardHeader>
                 <CardHeader pad='small'>
                   <b>Location: </b>
@@ -316,7 +316,7 @@ function App() {
                 <CardBody pad='small>'>
                   <Image
                     fit='contain'
-                    src={'http://localhost:5000/' + marker.imageURL}
+                    src={`${BASE_URL}/${marker.imageURL}`}
                   ></Image>
                 </CardBody>
 

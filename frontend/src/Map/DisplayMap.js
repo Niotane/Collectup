@@ -1,5 +1,5 @@
 import './mapsui.css';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { useCallbackRef } from 'use-callback-ref';
 
 import addMarkers from './addMarkers';
@@ -31,6 +31,7 @@ const DisplayMap = ({ markers, setCurrMarker, query, setMidLocations }) => {
 
     const midLocationsProp = {};
 
+    // eslint-disable-next-line no-unused-vars
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
     const ui = H.ui.UI.createDefault(hMap, defaultLayers);
