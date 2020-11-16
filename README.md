@@ -40,3 +40,32 @@ This was the best thing about us. Everyone learned something new and helped each
 If we have sufficient users, we might consider implementing filters so that recycling companies and government organizations can more easily identify the items they should collect. We might also, in a near future, look at improving the UI to make it more visually appealing.
 
 Finally, to scale the project and create a real company out of it, we could modify some features, to make it a second-hand market, where users take advantage of this catalog of objects ( the feed ) where they could have a potential interest in objects, they could then track their's in exchange, or propose money to get priority. Thus, the project could naturally expand in a second-hand trade market, if the objects turn out to be valuable...The more users would join, the more likely it could turn out like this.
+
+## Setup Development Environment
+
+Run two different Shells for backend (nodeJS) and frontend (react app)
+
+**ReactJs** 
+
+- CWD -> `./frontend`
+
+- Create a `.env` file with 
+```
+REACT_API_HERE_KEY=yourKeyHere
+```
+
+- Install npm packages and start the project (using yarn)
+```
+yarn install
+yarn start
+```
+
+**NodeJs**
+
+- CWD -> `./backend`
+
+- Install npm packages and start the project (using yarn)
+```
+yarn install
+yarn start
+```
