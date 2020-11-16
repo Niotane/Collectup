@@ -43,6 +43,7 @@ export const useAPI = () => {
 
   useEffect(() => {
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       activeRequests.current.forEach((request) => {
         request.abort();
       });
