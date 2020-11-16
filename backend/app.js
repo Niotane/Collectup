@@ -12,6 +12,10 @@ app.use(cors());
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+  res.send(`[x] API Live - ${Date.now()}`);
+});
+
 // returns the coords of all registered items
 app.get('/location', (req, res, next) => {
   Item.find()
@@ -107,7 +111,9 @@ mongoose
       useFindAndModify: false,
     }
   )
-  .then(() => app.listen(5000))
+  .then(() => {})
   .catch((err) => {
     console.log(err);
   });
+
+app.listen(8080);
