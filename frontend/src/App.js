@@ -4,7 +4,6 @@ import {
   Grommet,
   Button,
   Heading,
-  Box,
   Form,
   FormField,
   TextInput,
@@ -21,11 +20,11 @@ import {
   List,
   Image,
 } from 'grommet';
-import { Notification, Favorite, ShareOption } from 'grommet-icons';
+import { Notification, Favorite, ShareOption, Compare } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import Modal from 'react-modal';
 import ta from 'time-ago';
-
+import { Box } from '@material-ui/core';
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
 import { useForm } from './util/useForm';
