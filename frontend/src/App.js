@@ -2,7 +2,6 @@ import './App.css';
 import { useEffect, useState, Suspense } from 'react';
 import {
   Button,
-  Heading,
   Form,
   FormField,
   TextInput,
@@ -19,31 +18,32 @@ import {
   List,
   Image,
 } from 'grommet';
-import { Notification, Favorite, ShareOption, Compare } from 'grommet-icons';
+import { Favorite, ShareOption } from 'grommet-icons';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import Modal from 'react-modal';
 import ta from 'time-ago';
-import { Box } from '@material-ui/core';
+import { Box, CssBaseline } from '@material-ui/core';
 import DisplayMap from './Map/DisplayMap';
 import { useAPI } from './util/useAPI';
 import { useForm } from './util/useForm';
 import FormView from './form';
+import { createMuiTheme } from '@material-ui/core';
+import { ThemeProvider } from 'styled-components';
 
 // Modal.setAppElement('#root');
 const BASE_URL = 'https://oxford-hackathon.el.r.appspot.com';
 
-const theme = {
-  global: {
-    colors: {
-      brand: '#7D4CDB',
-    },
-    font: {
-      family: 'Roboto',
-      size: '18px',
-      height: '20px',
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#7D4CDB',
     },
   },
-};
+  Typography: {
+    fontFamily: 'Roboto',
+    fontSize: '18px',
+  },
+});
 const style = {
   margin: 0,
   top: 'auto',
@@ -151,185 +151,197 @@ function App() {
 
   console.log(currMarker);
   return (
-    <div>
-      <Header />
-      <Heading level='2' margin='none'>
-        CollectUp.io
-      </Heading>
-      <Button icon={<Notification />} onClick={() => {}} />
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setIsOpen(false)}
-        style={modalStyle}
-        contentLabel='User POST Form'
-      >
-        <FormView formHandler={formSubmitHandler} inputHandler={inputHandler} />
-      </Modal>
-      <Box height='60%'>
-        <Suspense fallback={<ScaleLoader loading={isLoading} />}>
-          <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
-            <DisplayMap
-              markers={markersList}
-              setCurrMarker={setCurrMarker}
-              query={query}
-              key={query}
-              setMidLocations={setMidLocations}
-            />
-          </Box>
-        </Suspense>
-      </Box>
-      <Button
-        primary
-        size='large'
-        label='Create New Post'
-        style={style}
-        onClick={() => {
-          setIsOpen((prev) => !prev);
-        }}
-      />
-      <Box
-        flex
-        direction='row'
-        background='dark-2'
-        align='baseline'
-        justify='evenly'
-        height={{ min: '30vw' }}
-        pad='2em'
-      >
-        <Form
-          value={query}
-          onReset={() => setQuery({})}
-          onSubmit={(evt) => {
-            const data = new FormData(evt.target);
-            setQuery(data.get('address'));
-          }}
+    <ThemeProvider theme={theme}>
+      <div>
+        <Header />
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setIsOpen(false)}
+          style={modalStyle}
+          contentLabel='User POST Form'
         >
-          <FormField
-            name='current-location'
-            htmlfor='text-input-id'
-            label='Enter your start and end address'
-          >
-            <TextInput id='text-input' name='address' />
-          </FormField>
-
-          <Box direction='row' gap='medium'>
-            <Button type='submit' primary label='Submit' />
-            <Button type='reset' label='Reset' />
-          </Box>
-        </Form>
-        <Box flex direction='row' justify='evenly' background='dark-2'>
-          <Box gap='0.5vw'>
-            <Text weight='bold' size='large' color='#6FFFB0'>
-              TIMELINE
-            </Text>
-            <List
-              primaryKey='location'
-              secondaryKey='time'
-              data={midLocation}
-            />
-          </Box>
-          <Box direction='column' gap='2vw'>
-            <Box gap='0.5vw' alignSelf='start'>
-              <Text weight='bold' size='large' color='#6FFFB0'>
-                CURRENT TIME
-              </Text>
-              <Clock type='digital' size='xxlarge' />
+          <FormView
+            formHandler={formSubmitHandler}
+            inputHandler={inputHandler}
+          />
+        </Modal>
+        <Box height='60%'>
+          <Suspense fallback={<ScaleLoader loading={isLoading} />}>
+            <Box
+              flex
+              direction='row'
+              elevation='small'
+              height={{ min: '30vw' }}
+            >
+              <DisplayMap
+                markers={markersList}
+                setCurrMarker={setCurrMarker}
+                query={query}
+                key={query}
+                setMidLocations={setMidLocations}
+              />
             </Box>
+          </Suspense>
+        </Box>
+        <Button
+          primary
+          size='large'
+          label='Create New Post'
+          style={style}
+          onClick={() => {
+            setIsOpen((prev) => !prev);
+          }}
+        />
+        <Box
+          flex
+          direction='row'
+          background='dark-2'
+          align='baseline'
+          justify='evenly'
+          height={{ min: '30vw' }}
+          pad='2em'
+        >
+          <Form
+            value={query}
+            onReset={() => setQuery({})}
+            onSubmit={(evt) => {
+              const data = new FormData(evt.target);
+              setQuery(data.get('address'));
+            }}
+          >
+            <FormField
+              name='current-location'
+              htmlfor='text-input-id'
+              label='Enter your start and end address'
+            >
+              <TextInput id='text-input' name='address' />
+            </FormField>
+
+            <Box direction='row' gap='medium'>
+              <Button type='submit' primary label='Submit' />
+              <Button type='reset' label='Reset' />
+            </Box>
+          </Form>
+          <Box flex direction='row' justify='evenly' background='dark-2'>
             <Box gap='0.5vw'>
               <Text weight='bold' size='large' color='#6FFFB0'>
-                JOURNEY PROGRESS
+                TIMELINE
               </Text>
-              <Meter
-                type='circle'
-                values={[
-                  {
-                    value: 60,
-                    label: 'sixty',
-                    onClick: () => {},
-                  },
-                ]}
-                aria-label='meter'
-                size='xsmall'
+              <List
+                primaryKey='location'
+                secondaryKey='time'
+                data={midLocation}
+              />
+            </Box>
+            <Box direction='column' gap='2vw'>
+              <Box gap='0.5vw' alignSelf='start'>
+                <Text weight='bold' size='large' color='#6FFFB0'>
+                  CURRENT TIME
+                </Text>
+                <Clock type='digital' size='xxlarge' />
+              </Box>
+              <Box gap='0.5vw'>
+                <Text weight='bold' size='large' color='#6FFFB0'>
+                  JOURNEY PROGRESS
+                </Text>
+                <Meter
+                  type='circle'
+                  values={[
+                    {
+                      value: 60,
+                      label: 'sixty',
+                      onClick: () => {},
+                    },
+                  ]}
+                  aria-label='meter'
+                  size='xsmall'
+                />
+              </Box>
+            </Box>
+            <Box gap='0.5vw'>
+              <Calendar
+                size='medium'
+                date={new Date().toISOString()}
+                onSelect={(date) => {}}
               />
             </Box>
           </Box>
-          <Box gap='0.5vw'>
-            <Calendar
-              size='medium'
-              date={new Date().toISOString()}
-              onSelect={(date) => {}}
-            />
+        </Box>
+        <Box
+          flex='around'
+          direction='row'
+          background='dark-1'
+          align='baseline'
+          justify='around'
+          height={{ min: '30vw' }}
+          pad='2em'
+          wrap='true'
+        >
+          <Box flex='around' wrap='true' pad='2en' width='100%' align='center'>
+            <Heading>Feed</Heading>
           </Box>
-        </Box>
-      </Box>
-      <Box
-        flex='around'
-        direction='row'
-        background='dark-1'
-        align='baseline'
-        justify='around'
-        height={{ min: '30vw' }}
-        pad='2em'
-        wrap='true'
-      >
-        <Box flex='around' wrap='true' pad='2en' width='100%' align='center'>
-          <Heading>Feed</Heading>
-        </Box>
-        {markersList &&
-          markersList.map((marker) => {
-            return (
-              <Card
-                height='medium'
-                width='25%'
-                background='light-1'
-                margin='small'
-                flex-justify='around'
-              >
-                <CardHeader pad='small'>
-                  <b>Name : </b>
-                  {marker.user}
-                </CardHeader>
-                <CardHeader pad='small'>
-                  <b>Contact Number: </b>
-                  {marker.phoneNumber}
-                </CardHeader>
-                <CardHeader pad='small'>
-                  <b>Description: </b>
-                  {marker.description}
-                </CardHeader>
-                <CardHeader pad='small'>
-                  <b>User Address: </b>
-                  {marker.address}
-                </CardHeader>
-                <CardHeader pad='small'>
-                  <b>Listed on: </b>
-                  {ta.ago(marker.dateListed)}
-                </CardHeader>
-                <CardHeader pad='small'>
-                  <b>Location: </b>
-                  {marker.city + ',' + marker.country}
-                </CardHeader>
-                <CardBody pad='small>'>
-                  <Image
-                    fit='contain'
-                    src={`${BASE_URL}/${marker.imageURL}`}
-                  ></Image>
-                </CardBody>
+          {markersList &&
+            markersList.map((marker) => {
+              return (
+                <Card
+                  height='medium'
+                  width='25%'
+                  background='light-1'
+                  margin='small'
+                  flex-justify='around'
+                >
+                  <CardHeader pad='small'>
+                    <b>Name : </b>
+                    {marker.user}
+                  </CardHeader>
+                  <CardHeader pad='small'>
+                    <b>Contact Number: </b>
+                    {marker.phoneNumber}
+                  </CardHeader>
+                  <CardHeader pad='small'>
+                    <b>Description: </b>
+                    {marker.description}
+                  </CardHeader>
+                  <CardHeader pad='small'>
+                    <b>User Address: </b>
+                    {marker.address}
+                  </CardHeader>
+                  <CardHeader pad='small'>
+                    <b>Listed on: </b>
+                    {ta.ago(marker.dateListed)}
+                  </CardHeader>
+                  <CardHeader pad='small'>
+                    <b>Location: </b>
+                    {marker.city + ',' + marker.country}
+                  </CardHeader>
+                  <CardBody pad='small>'>
+                    <Image
+                      fit='contain'
+                      src={`${BASE_URL}/${marker.imageURL}`}
+                    ></Image>
+                  </CardBody>
 
-                <CardFooter pad={{ horizontal: 'small' }} background='light-2'>
-                  <Button icon={<Favorite color='red' />} hoverIndicator />
-                  <Button icon={<ShareOption color='plain' />} hoverIndicator />
-                </CardFooter>
-              </Card>
-            );
-          })}
-      </Box>
-      <Footer background='brand' pad='medium'>
-        <Text>Copyright</Text>
-        <Anchor label='About' />
-      </Footer>
-    </div>
+                  <CardFooter
+                    pad={{ horizontal: 'small' }}
+                    background='light-2'
+                  >
+                    <Button icon={<Favorite color='red' />} hoverIndicator />
+                    <Button
+                      icon={<ShareOption color='plain' />}
+                      hoverIndicator
+                    />
+                  </CardFooter>
+                </Card>
+              );
+            })}
+        </Box>
+        <Footer background='brand' pad='medium'>
+          <Text>Copyright</Text>
+          <Anchor label='About' />
+        </Footer>
+      </div>
+      <CssBaseline />
+    </ThemeProvider>
   );
 }
 

@@ -1,4 +1,3 @@
-import { AppBar, IconButton } from '@material-ui/core';
 import React from 'react';
 import {
   AppBar,
@@ -9,13 +8,26 @@ import {
   Badge,
 } from '@material-ui/core';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: '#9400D3	',
+  },
+  titleHeading: {
+    padding: '0px 10px',
+    fontSize: '1.5rem',
+  },
+});
 export default function Header() {
+  const classes = useStyles();
   return (
-    <AppBar position='static'>
+    <AppBar position='static' className={classes.root}>
       <Toolbar>
         <Grid container>
-          <Grid item sm={4}></Grid>
-          <Grid item sm={8} style={{ border: '1px solid #000' }}>
+          <Grid item>
+            <Heading className={classes.titleHeading}>CollectUp.io</Heading>
+          </Grid>
+          <Grid item sm></Grid>
+          <Grid item>
             <IconButton>
               <Badge badgeContent={4} color='secondary'>
                 <NotificationsNoneIcon />
