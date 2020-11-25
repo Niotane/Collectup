@@ -5,7 +5,7 @@ import ta from 'time-ago';
 
 import TimelineView from './TimelineView';
 import FeedView from './FeedView';
-import DisplayMap from './utils/DisplayMap';
+import DisplayMapLegacy from './utils/DisplayMapLegacy';
 import useAPI from '../../util/useAPI';
 
 function MapView() {
@@ -40,7 +40,7 @@ function MapView() {
       <Box height='60%'>
         <Suspense fallback={<ScaleLoader />}>
           <Box flex direction='row' elevation='small' height={{ min: '30vw' }}>
-            <DisplayMap
+            <DisplayMapLegacy
               markers={markersList}
               setCurrMarker={setCurrMarker}
               query={query}
