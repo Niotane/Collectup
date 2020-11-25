@@ -1,4 +1,3 @@
-import './App.css';
 import { useState } from 'react';
 import { Grommet, Button } from 'grommet';
 import Modal from 'react-modal';
