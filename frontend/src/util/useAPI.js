@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-export const useAPI = () => {
+const useAPI = () => {
   const BACKEND_ADDRESS = 'https://oxford-hackathon.el.r.appspot.com';
   const activeRequests = useRef([]);
 
@@ -52,3 +52,5 @@ export const useAPI = () => {
 
   return [sendRequest];
 };
+
+export default useAPI;

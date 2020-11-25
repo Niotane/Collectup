@@ -1,5 +1,5 @@
+import './ImageUploadView.css';
 import React, { useRef, useState, useEffect } from 'react';
-import './ImageUpload.css';
 
 const ImageUpload = (props) => {
   const [file, setFile] = useState();
