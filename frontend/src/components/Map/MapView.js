@@ -33,7 +33,7 @@ function MapView() {
     getMapMarkers();
   }, [sendRequest]);
 
-  console.log(`[*] Current Marker - ${currMarker}`);
+  console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
 
   return (
     <>
