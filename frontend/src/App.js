@@ -1,7 +1,6 @@
 import './App.css';
 import { useEffect, useState, Suspense } from 'react';
 import {
-  Grommet,
   Button,
   Heading,
   Form,
@@ -152,13 +151,13 @@ function App() {
 
   console.log(currMarker);
   return (
-    <Grommet theme={theme} themeMode='dark' full>
-      <AppBar>
-        <Heading level='2' margin='none'>
-          CollectUp.io
-        </Heading>
-        <Button icon={<Notification />} onClick={() => {}} />
-      </AppBar>
+    <div>
+      <Header />
+      <Heading level='2' margin='none'>
+        CollectUp.io
+      </Heading>
+      <Button icon={<Notification />} onClick={() => {}} />
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setIsOpen(false)}
@@ -330,7 +329,7 @@ function App() {
         <Text>Copyright</Text>
         <Anchor label='About' />
       </Footer>
-    </Grommet>
+    </div>
   );
 }
 
