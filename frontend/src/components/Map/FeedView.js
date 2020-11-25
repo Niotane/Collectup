@@ -25,7 +25,7 @@ function FeedView({ markersList }) {
       height={{ min: '30vw' }}
       pad='2em'
     >
-      <Box flex wrap pad='2en' width='100%' align='center'>
+      <Box pad='2en' width='100%' align='center'>
         <Heading>Feed</Heading>
       </Box>
       {markersList &&

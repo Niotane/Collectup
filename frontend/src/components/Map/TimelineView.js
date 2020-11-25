@@ -11,7 +11,7 @@ import {
   List,
 } from 'grommet';
 
-function TimelineView({ query, setQuery, midLocation }) {
+function TimelineView({ setQuery, midLocation }) {
   return (
     <Box
       flex

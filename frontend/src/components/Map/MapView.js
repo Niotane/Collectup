@@ -33,6 +33,8 @@ function MapView() {
     getMapMarkers();
   }, [sendRequest]);
 
+  console.log(`[*] Current Marker - ${currMarker}`);
+
   return (
     <>
       <Box height='60%'>
@@ -48,11 +50,7 @@ function MapView() {
           </Box>
         </Suspense>
       </Box>
-      <TimelineView
-        query={query}
-        setQuery={setQuery}
-        midLocation={midLocation}
-      />
+      <TimelineView setQuery={setQuery} midLocation={midLocation} />
       <FeedView markersList={markersList} />
     </>
   );
