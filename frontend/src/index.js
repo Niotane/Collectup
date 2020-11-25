@@ -1,8 +1,9 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+
+const App = React.lazy(() => import('./App'));
 
 ReactDOM.render(
   <React.StrictMode>

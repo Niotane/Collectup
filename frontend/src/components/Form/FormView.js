@@ -1,10 +1,42 @@
 import { Button, Box, Form, FormField, TextInput, Select } from 'grommet';
-import ImageUpload from './util/ImageUpload';
+import ImageUploadView from './ImageUploadView';
+import useForm from './useForm';
+import formHandler from './formHandler';
 
-function FormView({ formHandler, inputHandler }) {
+function FormView() {
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: '',
+        isValid: false,
+      },
+      description: {
+        value: '',
+        isValid: false,
+      },
+      address: {
+        value: '',
+        isValid: false,
+      },
+      coordinates: {
+        value: '',
+        isValid: false,
+      },
+      image: {
+        value: null,
+        isValid: false,
+      },
+    },
+    false
+  );
+
   return (
     <Box flex justify='around' background='dark-2'>
-      <Form value={{}} onReset={() => {}} onSubmit={(evt) => formHandler(evt)}>
+      <Form
+        value={{}}
+        onReset={() => {}}
+        onSubmit={(evt) => formHandler(evt, formState)}
+      >
         <FormField name='name' htmlfor='text-input-id' label='Name'>
           <TextInput id='text-input-id' name='name' />
         </FormField>
@@ -34,7 +66,7 @@ function FormView({ formHandler, inputHandler }) {
           />
         </FormField>
         <FormField name='image' htmlfor='text-input-id' label='Image'>
-          <ImageUpload
+          <ImageUploadView
             id='image'
             name='image'
             onInput={inputHandler}

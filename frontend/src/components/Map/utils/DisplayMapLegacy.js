@@ -4,6 +4,15 @@ import { useCallbackRef } from 'use-callback-ref';
 
 import addMarkers from './addMarkers';
 
+/**
+ * 
+ * Legacy code
+ * 
+ * Needs refactoring.
+ *   - Rewrite DOM mounts
+ *   - Event listeners instead of callbacks
+ * 
+ */
 const DisplayMap = ({ markers, setCurrMarker, query, setMidLocations }) => {
   // Create a reference to the HTML element we want to put the map on
   const mapRef = useCallbackRef(null, (ref) => ref && ref.focus());
