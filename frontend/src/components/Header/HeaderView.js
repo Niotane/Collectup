@@ -3,11 +3,10 @@ import {
   Toolbar,
   IconButton,
   Badge,
-  MenuIcon,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+import { Notifications, Menu } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +40,7 @@ function HeaderView() {
             color='inherit'
             aria-label='menu'
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography variant='h6' color='inherit'>
             CollectUp
@@ -50,7 +49,7 @@ function HeaderView() {
             <div className={classes.sectionDesktop}>
               <IconButton>
                 <Badge badgeContent={4} color='secondary'>
-                  <NotificationsNoneIcon />
+                  <Notifications />
                 </Badge>
               </IconButton>
             </div>
