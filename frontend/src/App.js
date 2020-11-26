@@ -6,6 +6,8 @@ import FormView from './components/Form/FormView';
 import MapView from './components/Map/MapView';
 import FooterView from './components/Footer/FooterView';
 import HeaderView from './components/Header/HeaderView';
+import FeedView from './components/Map/FeedView';
+import FeedHeader from './components/Map/FeedHeader';
 
 Modal.setAppElement('#root');
 
@@ -62,6 +64,8 @@ function App() {
           setIsOpen((prev) => !prev);
         }}
       />
+      <FeedHeader />
+      <FeedView />
       <FooterView />
     </ThemeProvider>
   );
