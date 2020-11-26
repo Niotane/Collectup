@@ -65,7 +65,6 @@ function App() {
         }}
       />
       <FeedHeader />
-      <FeedView />
       <FooterView />
     </ThemeProvider>
   );

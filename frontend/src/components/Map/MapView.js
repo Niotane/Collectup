@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect } from 'react';
-import { Box } from 'grommet';
+import { Box } from '@material-ui/core';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import ta from 'time-ago';
 
