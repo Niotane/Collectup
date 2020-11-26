@@ -13,12 +13,10 @@ export const RoutePath = ({
   transportMode,
   strokeColor,
   lineWidth,
-  getGeoLocations,
+  setViaLocations,
 }) => {
   const mapContext = React.useContext(MapContext);
-  const [routes, setRoutes] = React.useState(undefined);
   const [routePath, setRoutePath] = React.useState(undefined);
-  const [geoLocations, setGeoLocations] = React.useState(undefined);
 
   React.useEffect(() => {
     const H = window.H;
@@ -52,8 +50,8 @@ export const RoutePath = ({
           );
 
           const geoLocations = await fetchLocations(searchService, locations);
-          setGeoLocations(geoLocations);
-          getGeoLocations(geoLocations);
+
+          setViaLocations(geoLocations);
 
           const linestrings = sections.map(({ polyline }) =>
             H.geo.LineString.fromFlexiblePolyline(polyline)
@@ -66,12 +64,10 @@ export const RoutePath = ({
 
           if (routePath) {
             map.removeObject(routePath);
-            setGeoLocations(undefined);
           }
           map.addObject(newRoutePath);
 
           setRoutePath(routePath);
-          setRoutes(routes);
         };
 
         fetchRoute();
@@ -87,15 +83,8 @@ export const RoutePath = ({
     lineWidth,
     mapContext,
     routePath,
-    routes,
-    getGeoLocations
+    setViaLocations,
   ]);
-
-  // React.useEffect(() => {
-  //   if (geoLocations) {
-  //     getGeoLocations(geoLocations);
-  //   }
-  // }, [getGeoLocations]);
 
   return null;
 };

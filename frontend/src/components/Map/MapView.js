@@ -1,20 +1,18 @@
 import { Suspense, useState, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Box } from 'grommet';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import { ErrorBoundary } from 'react-error-boundary';
 import ta from 'time-ago';
 
 import TimelineView from './TimelineView';
 import FeedView from './FeedView';
-import DisplayMapLegacy from './HEREMap/legacy/DisplayMapLegacy';
-import { HEREMap, Marker, RouteLine } from './HEREMap';
+import { HEREMap, Marker, RoutePath } from './HEREMap';
 import useAPI from '../../util/useAPI';
-import RoutePath from './HEREMap/RoutePath';
 
 function MapView() {
   const [sendRequest] = useAPI();
   const [query, setQuery] = useState('');
-  const [midLocations, setMidLocations] = useState([]);
+  const [viaLocations, setViaLocations] = useState([]);
   const [markersList, setMarkersList] = useState([]);
   // const [currMarker, setCurrMarker] = useState({});
 
@@ -34,12 +32,12 @@ function MapView() {
   }, [sendRequest]);
 
   useEffect(() => {
-    const newMidLocations = midLocations.map((loc) => {
+    const newMidLocations = viaLocations.map((loc) => {
       const relativeTime = ta.ago(loc.time);
       return { ...loc, time: relativeTime };
     });
 
-    setMidLocations(newMidLocations);
+    setViaLocations(newMidLocations);
   }, []);
 
   // console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
@@ -55,18 +53,14 @@ function MapView() {
               elevation='small'
               height={{ min: '30vw' }}
             >
-              {/* <DisplayMapLegacy
-              markers={markersList}
-              setCurrMarker={setCurrMarker}
-              query={query}
-              key={query}
-              setMidLocations={setMidLocations}
-            /> */}
               <HEREMap
                 apikey={process.env.REACT_APP_HERE_API_KEY || ''}
                 center={{ lat: 50, lng: 5 }}
+                animateCenter
+                animateZoom
                 interactive
-                zoom={4}
+                hidpi
+                zoom={6}
               >
                 <Markers points={markersList} />
                 <RoutePath
@@ -77,13 +71,13 @@ function MapView() {
                   transportMode='truck'
                   strokeColor='#f55b5b'
                   lineWidth={4}
-                  getGeoLocations={setMidLocations}
+                  setViaLocations={() => setViaLocations}
                 />
               </HEREMap>
             </Box>
           </Suspense>
         </Box>
-        <TimelineView setQuery={setQuery} midLocation={midLocations} />
+        <TimelineView setQuery={setQuery} midLocations={viaLocations} />
         <FeedView markersList={markersList} />
       </>
     </ErrorBoundary>
@@ -93,7 +87,7 @@ function MapView() {
 const Markers = ({ points }) => {
   console.log(points);
   return points.map((point) => {
-    const { lat, lng } = point.split(',');
+    const [lat, lng] = point.split(',');
     if (lat && lng)
       return <Marker lat={lat} lng={lng} data='demo1' key={point} />;
     return null;

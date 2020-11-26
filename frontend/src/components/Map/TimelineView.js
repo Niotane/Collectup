@@ -11,7 +11,7 @@ import {
   List,
 } from 'grommet';
 
-function TimelineView({ setQuery, midLocation }) {
+function TimelineView({ setQuery, midLocations }) {
   return (
     <Box
       flex
@@ -48,7 +48,7 @@ function TimelineView({ setQuery, midLocation }) {
           <Text weight='bold' size='large' color='#6FFFB0'>
             TIMELINE
           </Text>
-          <List primaryKey='location' secondaryKey='time' data={midLocation} />
+          <List primaryKey='location' secondaryKey='time' data={midLocations} />
         </Box>
         <Box direction='column' gap='2vw'>
           <Box gap='0.5vw' alignSelf='start'>
