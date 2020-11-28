@@ -1,7 +1,8 @@
 import React from 'react';
-import { withStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-const styles = (theme) => ({
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginTop: 30,
@@ -28,33 +29,30 @@ const styles = (theme) => ({
   flexContainer: {
     display: 'flex',
   },
-});
-class FooterView extends React.Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <Grid
-          container
-          spacing={0}
-          className={classNames(classes.footerText, classes.footerSections)}
-        >
-          <Grid item xs={12} sm={4}>
-            <div>
-              <span> This porject is open source </span>
-              <span>GitHub: https://github.com/Niotane/Collectup </span>
-            </div>
-          </Grid>
-          <Grid className={classes.subFooter} item xs={12}>
-            <span>
-              Copyright
-              <Anchor label='About' />
-            </span>
-          </Grid>
+}));
+
+function FooterView() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <Grid
+        container
+        spacing={0}
+        className={`${classes.footerText} ${classes.footerSections}`}
+      >
+        <Grid item xs={12} sm={4}>
+          <div>
+            <span>This project is open source</span>
+            <span>GitHub: https://github.com/Niotane/Collectup</span>
+          </div>
         </Grid>
-      </div>
-    );
-  }
+        <Grid className={classes.subFooter} item xs={12}>
+          <span>Copyright</span>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
 
-export default withStyles(styles)(FooterView);
+export default FooterView;
