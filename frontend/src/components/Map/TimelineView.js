@@ -14,7 +14,7 @@ import {
   List,
 } from '@material-ui/core';
 
-function TimelineView({ setQuery, midLocation }) {
+function TimelineView({ setQuery, midLocations }) {
   const [selectedDate, SetSelectDate] = React.useState(
     new Date('2020-11-26-T17:00:00')
   );
@@ -57,7 +57,6 @@ function TimelineView({ setQuery, midLocation }) {
             <FormControl>
               <TextField id='address' label='Address' />
             </FormControl>
-
             <Box direction='row' gap='medium'>
               <Button type='submit' primary label='Submit' />
               <Button type='reset' label='Reset' />
@@ -71,7 +70,7 @@ function TimelineView({ setQuery, midLocation }) {
               <List
                 primaryKey='location'
                 secondaryKey='time'
-                data={midLocation}
+                data={midLocations}
               />
             </Box>
             <Box direction='column' gap='2vw'>
