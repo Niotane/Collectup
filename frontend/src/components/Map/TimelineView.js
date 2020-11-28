@@ -1,4 +1,3 @@
-import 'date-fns';
 import React from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -9,14 +8,14 @@ import {
   Grid,
   Button,
   Box,
-  FormField,
-  Input,
-  Text,
+  FormControl,
+  TextField,
+  Typography,
   List,
 } from '@material-ui/core';
 
 function TimelineView({ setQuery, midLocation }) {
-  const [selectDate, SetSelectDate] = React.useState(
+  const [selectedDate, SetSelectDate] = React.useState(
     new Date('2020-11-26-T17:00:00')
   );
   const handleDateChange = (date) => {
@@ -55,13 +54,9 @@ function TimelineView({ setQuery, midLocation }) {
               setQuery(data.get('address'));
             }}
           >
-            <FormField
-              name='current-location'
-              htmlfor='text-input-id'
-              label='Enter your start and end address'
-            >
-              <Input id='text-input' name='address' />
-            </FormField>
+            <FormControl>
+              <TextField id='address' label='Address' />
+            </FormControl>
 
             <Box direction='row' gap='medium'>
               <Button type='submit' primary label='Submit' />
@@ -70,9 +65,9 @@ function TimelineView({ setQuery, midLocation }) {
           </Grid>
           <Box flex direction='row' justify='evenly' background='dark-2'>
             <Box gap='0.5vw'>
-              <Text weight='bold' size='large' color='#6FFFB0'>
+              <Typography variant='h2' color='#6FFFB0'>
                 TIMELINE
-              </Text>
+              </Typography>
               <List
                 primaryKey='location'
                 secondaryKey='time'
@@ -81,9 +76,9 @@ function TimelineView({ setQuery, midLocation }) {
             </Box>
             <Box direction='column' gap='2vw'>
               <Box gap='0.5vw'>
-                <Text weight='bold' size='large' color='#6FFFB0'>
+                <Typography variant='h2' color='#6FFFB0'>
                   JOURNEY PROGRESS
-                </Text>
+                </Typography>
               </Box>
             </Box>
           </Box>
