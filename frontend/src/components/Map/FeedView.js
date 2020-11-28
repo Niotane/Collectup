@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import {
+  Grid,
   Paper,
   Card,
   CardHeader,
@@ -12,6 +13,7 @@ import {
   CardMedia,
   Collapse,
 } from '@material-ui/core';
+import PuffLoader from 'react-spinners/PuffLoader';
 import ta from 'time-ago';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
@@ -22,9 +24,8 @@ const BASE_URL = 'https://oxford-hackathon.el.r.appspot.com';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
-    height: 'md',
-    width: 'md',
+    width: '40vh',
+    minHeight: '40vh',
     backgroundColor: '',
     margin: 'sm',
     flexJustify: 'around',
@@ -45,9 +46,54 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  box: {
+    backgroundColor: theme.palette.background.paper,
+    minHeight: '30vw',
+    padding: theme.spacing(2),
+  },
+  fixedCard: {
+    height: '3vh',
+    overflowY: 'hide',
+  },
 }));
 
-export default function FeedView({ markersList }) {
+export default function FeedView({ posts }) {
+  const classes = useStyles();
+
+  if (posts.length === 0) {
+    return (
+      <Grid
+        className={classes.box}
+        container
+        justify='center'
+        alignItems='center'
+      >
+        <PuffLoader size={30} color='#b390f5' />
+      </Grid>
+    );
+  }
+
+  return (
+    <Grid className={classes.box} container justify='space-between'>
+      <Grid item xs={12}>
+        <Grid container justify='center' spacing={3}>
+          <Grid item>
+            <Typography variant='h2' color='textPrimary'>
+              <strong>My Feed</strong>
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Grid container justify='flex-start' spacing={2}>
+              <Posts posts={posts} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+}
+
+function Posts({ posts }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -55,71 +101,66 @@ export default function FeedView({ markersList }) {
     setExpanded(!expanded);
   };
 
-  return (
-    markersList &&
-    markersList.map((marker) => {
-      return (
-        <Paper elevation={2}>
-          <Card className={classes.root} key={JSON.stringify(marker)}>
-            <CardHeader
-              action={
-                <IconButton aria-label='settings'>
-                  <AddIcon />
-                </IconButton>
-              }
-              title='Add a marker.title here'
-              subheader={ta.ago(marker.dateListed)}
-            />
-            <CardMedia
-              className={classes.media}
-              image={`${BASE_URL}/${marker.imageURL}`}
-            />
+  console.log('[*] User Posts:', posts);
+
+  return posts.map((post) => {
+    return (
+      <Grid item key={JSON.stringify(post)} lg={3}>
+        <Card className={classes.root} key={JSON.stringify(post)}>
+          <CardMedia
+            alt='Contemplative Reptile'
+            className={classes.media}
+            image={`${BASE_URL}/${post.imageURL}`}
+          />
+          <CardHeader
+            title={post.category}
+            titleTypographyProps={{ variant: 'h6' }}
+            subheader={ta.ago(post.dateListed)}
+          />
+          <CardContent className={classes.fixedCard}>
+            <Typography variant='body2' color='textSecondary' component='p'>
+              {post.description}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label='add to favorites'>
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton aria-label='share'>
+              <ShareIcon />
+            </IconButton>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label='user information'
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expanded} timeout='auto' unmountOnExit>
             <CardContent>
-              <Typography variant='body2' color='textSecondary' component='p'>
-                {marker.description}
+              <Typography variant='body1'>
+                <strong>Name:</strong> {post.user}
+              </Typography>
+              <Typography variant='body1'>
+                <strong>Contact number:</strong> {post.phoneNumber}
+              </Typography>
+              <Typography variant='body1'>
+                <strong>Address:</strong> {post.address}{' '}
+              </Typography>
+              <Typography variant='body1'>
+                <strong>Listed on:</strong> {ta.ago(post.dateListed)}
+              </Typography>
+              <Typography variant='body1'>
+                <strong>Location:</strong> {post.city + ',' + post.country}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-              <IconButton aria-label='add to favorites'>
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label='share'>
-                <ShareIcon />
-              </IconButton>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label='user information'
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout='auto' unmountOnExit>
-              <CardContent>
-                <Typography component='h3'> Name: {marker.user}</Typography>
-                <Typography component='h3'>
-                  Contact number : {marker.phoneNumber}
-                </Typography>
-                <Typography component='h3'>
-                  {' '}
-                  Address : {marker.address}{' '}
-                </Typography>
-                <Typography component='h3'>
-                  {' '}
-                  Listed on: {ta.ago(marker.dateListed)}{' '}
-                </Typography>
-                <Typography component='h3'>
-                  {' '}
-                  Location : {marker.city + ',' + marker.country}{' '}
-                </Typography>
-              </CardContent>
-            </Collapse>
-          </Card>
-        </Paper>
-      );
-    })
-  );
+          </Collapse>
+        </Card>
+      </Grid>
+    );
+  });
 }

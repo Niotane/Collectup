@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import ScaleLoader from 'react-spinners/ScaleLoader';
+import PuffLoader from 'react-spinners/PuffLoader';
 
 const App = React.lazy(() => import('./App'));
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<ScaleLoader />}>
+    <Suspense fallback={<PuffLoader />}>
       <App />
     </Suspense>
   </React.StrictMode>,

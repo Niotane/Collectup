@@ -22,6 +22,7 @@ function MapView() {
   const [query, setQuery] = useState('');
   const [viaLocations, setViaLocations] = useState([]);
   const [markersList, setMarkersList] = useState([]);
+  const [posts, setPosts] = useState([]);
   // const [currMarker, setCurrMarker] = useState({});
 
   useEffect(() => {
@@ -29,6 +30,7 @@ function MapView() {
       const response = await sendRequest('/location');
       if (response) {
         console.log(response);
+        setPosts(response.data);
         const newMarkers = response.data.map(
           ({ location: { lat, lng } }) => `${lat},${lng}`
         );
@@ -80,7 +82,7 @@ function MapView() {
         </Suspense>
       </Grid>
       <TimelineView setQuery={setQuery} midLocations={viaLocations} />
-      <FeedView markersList={markersList} />
+      <FeedView posts={posts} />
     </ErrorBoundary>
   );
 }

@@ -35,7 +35,7 @@ function TimelineView({ setQuery, midLocations }) {
   const classes = useStyles();
 
   return (
-    <Grid className={classes.box} container justify='space-between' spacing={2}>
+    <Grid className={classes.box} container justify='space-between'>
       <Grid
         item
         onReset={() => setQuery({})}
@@ -47,7 +47,16 @@ function TimelineView({ setQuery, midLocations }) {
         <Grid container direction='column' alignItems='flex-start' spacing={2}>
           <Grid item>
             <FormControl>
-              <TextField id='address' label='Address' />
+              <TextField
+                id='address'
+                label='Address'
+                fullWidth
+                placeholder='Enter your start point here'
+                variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </FormControl>
           </Grid>
           <Grid item>
