@@ -42,10 +42,8 @@ function FooterView() {
         className={`${classes.footerText} ${classes.footerSections}`}
       >
         <Grid item xs={12} sm={4}>
-          <div>
-            <span>This project is open source</span>
-            <span>GitHub: https://github.com/Niotane/Collectup</span>
-          </div>
+          <span>This project is open source</span>
+          <span>GitHub: https://github.com/Niotane/Collectup</span>
         </Grid>
         <Grid className={classes.subFooter} item xs={12}>
           <span>Copyright</span>

@@ -1,90 +1,142 @@
 import React from 'react';
 import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import {
+  Avatar,
+  Box,
   Grid,
   Button,
-  Box,
+  CircularProgress,
   FormControl,
   TextField,
   Typography,
+  makeStyles,
   List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListSubheader,
 } from '@material-ui/core';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
+
+const useStyles = makeStyles((theme) => ({
+  box: {
+    backgroundColor: theme.palette.background.default,
+    minHeight: '30vw',
+    padding: theme.spacing(2),
+  },
+  list: {
+    minWidth: '20vw',
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
 function TimelineView({ setQuery, midLocations }) {
-  const [selectedDate, SetSelectDate] = React.useState(
-    new Date('2020-11-26-T17:00:00')
-  );
-  const handleDateChange = (date) => {
-    SetSelectDate(date);
-  };
+  const classes = useStyles();
+
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container justify='space-around'>
-        <KeyboardDatePicker
-          disableToolbar
-          variant='inline'
-          format='MM/dd/yyyy'
-          margin='normal'
-          id='date-picker-inline'
-          label='Date picker inline'
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        <Box
-          flex
-          direction='row'
-          background='dark-2'
-          align='baseline'
-          justify='evenly'
-          height={{ min: '30vw' }}
-          pad='2em'
-        >
-          <Grid
-            value={{}}
-            onReset={() => setQuery({})}
-            onSubmit={(evt) => {
-              const data = new FormData(evt.target);
-              setQuery(data.get('address'));
-            }}
-          >
+    <Grid className={classes.box} container justify='space-between' spacing={2}>
+      <Grid
+        item
+        onReset={() => setQuery({})}
+        onSubmit={(evt) => {
+          const data = new FormData(evt.target);
+          setQuery(data.get('address'));
+        }}
+      >
+        <Grid container direction='column' alignItems='flex-start' spacing={2}>
+          <Grid item>
             <FormControl>
               <TextField id='address' label='Address' />
             </FormControl>
-            <Box direction='row' gap='medium'>
-              <Button type='submit' primary label='Submit' />
-              <Button type='reset' label='Reset' />
-            </Box>
           </Grid>
-          <Box flex direction='row' justify='evenly' background='dark-2'>
-            <Box gap='0.5vw'>
-              <Typography variant='h2' color='#6FFFB0'>
+          <Grid item>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button variant='contained' size='medium' color='primary'>
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant='contained' size='medium'>
+                  Reset
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction='row' justify='space-between' spacing={2}>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography variant='h5' color='textSecondary'>
                 TIMELINE
               </Typography>
+              <Box m={1} />
               <List
-                primaryKey='location'
-                secondaryKey='time'
-                data={midLocations}
+                className={classes.list}
+                subheader={
+                  <ListSubheader component='div' id='nested-list-subheader'>
+                    Location and timings
+                  </ListSubheader>
+                }
+              >
+                <ListItems items={midLocations} />
+              </List>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography variant='h5' color='textSecondary'>
+                JOURNEY PROGRESS
+              </Typography>
+              <Box m={1} />
+              <CircularProgress
+                variant='determinate'
+                size={100}
+                thickness={8}
+                value={70}
               />
-            </Box>
-            <Box direction='column' gap='2vw'>
-              <Box gap='0.5vw'>
-                <Typography variant='h2' color='#6FFFB0'>
-                  JOURNEY PROGRESS
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography variant='h5' color='textSecondary'>
+                PICK YOUR DATE
+              </Typography>
+              <Box m={1} />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  autoOk
+                  disablePast
+                  animateYearScrolling
+                  orientation='landscape'
+                  variant='static'
+                  openTo='date'
+                  value={new Date()}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-    </MuiPickersUtilsProvider>
+    </Grid>
   );
 }
 
+function ListItems({ items }) {
+  return items.map(({ location, time }) => {
+    return (
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <LocationCityIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={location} secondary={time} />
+      </ListItem>
+    );
+  });
+}
 export default TimelineView;

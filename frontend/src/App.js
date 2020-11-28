@@ -1,17 +1,24 @@
 import { useState } from 'react';
-import { Button, createMuiTheme, ThemeProvider } from '@material-ui/core';
+import {
+  Fab,
+  Container,
+  createMuiTheme,
+  ThemeProvider,
+  makeStyles,
+} from '@material-ui/core';
 import Modal from 'react-modal';
+import AddIcon from '@material-ui/icons/Add';
 
 import FormView from './components/Form/FormView';
 import MapView from './components/Map/MapView';
 import FooterView from './components/Footer/FooterView';
 import HeaderView from './components/Header/HeaderView';
-import FeedHeader from './components/Map/FeedHeader';
 
 Modal.setAppElement('#root');
 
 const theme = createMuiTheme({
   palette: {
+    type: 'dark',
     primary: {
       main: '#7D4CDB',
     },
@@ -22,14 +29,16 @@ const theme = createMuiTheme({
   },
 });
 
-const fabStyle = {
-  margin: 0,
-  top: 'auto',
-  right: 20,
-  bottom: 20,
-  left: 'auto',
-  position: 'fixed',
-};
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 const modalStyle = {
   content: {
@@ -40,31 +49,33 @@ const modalStyle = {
 };
 
 function App() {
+  const classes = useStyles();
   const [modalIsOpen, setIsOpen] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
-      <HeaderView />
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setIsOpen(false)}
-        style={modalStyle}
-        contentLabel='Add your details here'
-      >
-        <FormView />
-      </Modal>
-      <MapView />
-      <Button
-        primary
-        size='large'
-        label='Create New Post'
-        style={fabStyle}
-        onClick={() => {
-          setIsOpen((prev) => !prev);
-        }}
-      />
-      <FeedHeader />
-      <FooterView />
+      <Container disableGutters maxWidth='xl'>
+        <HeaderView />
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setIsOpen(false)}
+          style={modalStyle}
+          contentLabel='Add your details here'
+        >
+          <FormView />
+        </Modal>
+        <MapView />
+        <Fab
+          variant='extended'
+          onClick={() => {
+            setIsOpen((prev) => !prev);
+          }}
+        >
+          <AddIcon className={classes.extendedIcon} />
+          Create New Post
+        </Fab>
+        <FooterView />
+      </Container>
     </ThemeProvider>
   );
 }

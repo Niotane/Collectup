@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect } from 'react';
-import { Box } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import { ErrorBoundary } from 'react-error-boundary';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import ta from 'time-ago';
@@ -9,7 +9,15 @@ import FeedView from './FeedView';
 import { HEREMap, Marker, RoutePath } from './HEREMap';
 import useAPI from '../../util/useAPI';
 
+const useStyles = makeStyles((theme) => ({
+  map: {
+    minHeight: '30vw',
+  },
+}));
+
 function MapView() {
+  const classes = useStyles();
+
   const [sendRequest] = useAPI();
   const [query, setQuery] = useState('');
   const [viaLocations, setViaLocations] = useState([]);
@@ -44,42 +52,35 @@ function MapView() {
 
   return (
     <ErrorBoundary FallbackComponent={() => 'Loading failed...'}>
-      <>
-        <Box height='60%'>
-          <Suspense fallback={<ScaleLoader />}>
-            <Box
-              flex
-              direction='row'
-              elevation='small'
-              height={{ min: '30vw' }}
+      <Grid container>
+        <Suspense fallback={<ScaleLoader />}>
+          <Grid item xs={12} className={classes.map}>
+            <HEREMap
+              apikey={process.env.REACT_APP_HERE_API_KEY || ''}
+              center={{ lat: 50, lng: 5 }}
+              animateCenter
+              animateZoom
+              interactive
+              hidpi
+              zoom={6}
             >
-              <HEREMap
-                apikey={process.env.REACT_APP_HERE_API_KEY || ''}
-                center={{ lat: 50, lng: 5 }}
-                animateCenter
-                animateZoom
-                interactive
-                hidpi
-                zoom={6}
-              >
-                <Markers points={markersList} />
-                <RoutePath
-                  origin={'48.86,2.31'}
-                  destination={'48.86,2.31'}
-                  via={markersList}
-                  returnType='polyline'
-                  transportMode='truck'
-                  strokeColor='#f55b5b'
-                  lineWidth={4}
-                  setViaLocations={() => setViaLocations}
-                />
-              </HEREMap>
-            </Box>
-          </Suspense>
-        </Box>
-        <TimelineView setQuery={setQuery} midLocations={viaLocations} />
-        <FeedView markersList={markersList} />
-      </>
+              <Markers points={markersList} />
+              <RoutePath
+                origin={'48.86,2.31'}
+                destination={'48.86,2.31'}
+                via={markersList}
+                returnType='polyline'
+                transportMode='truck'
+                strokeColor='#f55b5b'
+                lineWidth={4}
+                setViaLocations={() => setViaLocations}
+              />
+            </HEREMap>
+          </Grid>
+        </Suspense>
+      </Grid>
+      <TimelineView setQuery={setQuery} midLocations={viaLocations} />
+      <FeedView markersList={markersList} />
     </ErrorBoundary>
   );
 }
