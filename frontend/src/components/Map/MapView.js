@@ -1,13 +1,17 @@
 import { Suspense, useState, useEffect } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
+import Modal from 'react-modal';
 import { ErrorBoundary } from 'react-error-boundary';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import ta from 'time-ago';
 
+import { HEREMap, Marker, RoutePath } from './HEREMap';
 import TimelineView from './TimelineView';
 import FeedView from './FeedView';
-import { HEREMap, Marker, RoutePath } from './HEREMap';
+import FormView from '../Form/FormView';
 import useAPI from '../../util/useAPI';
+
+Modal.setAppElement('#root');
 
 const useStyles = makeStyles((theme) => ({
   map: {
@@ -83,6 +87,7 @@ function MapView() {
       </Grid>
       <TimelineView setQuery={setQuery} midLocations={viaLocations} />
       <FeedView posts={posts} />
+      <FormView />
     </ErrorBoundary>
   );
 }

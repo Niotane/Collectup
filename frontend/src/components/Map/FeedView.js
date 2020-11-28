@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import {
   Grid,
-  Paper,
   Card,
   CardHeader,
   CardActions,
@@ -18,7 +17,6 @@ import ta from 'time-ago';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import AddIcon from '@material-ui/icons/Add';
 
 const BASE_URL = 'https://oxford-hackathon.el.r.appspot.com';
 
@@ -140,7 +138,7 @@ function Posts({ posts }) {
               <ExpandMoreIcon />
             </IconButton>
           </CardActions>
-          <Collapse in={expanded} timeout='auto' unmountOnExit>
+          <Collapse unmountOnExit in={expanded} timeout='auto'>
             <CardContent>
               <Typography variant='body1'>
                 <strong>Name:</strong> {post.user}
