@@ -1,90 +1,151 @@
+import React from 'react';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import {
-  Button,
+  Avatar,
   Box,
-  Form,
-  FormField,
-  TextInput,
-  Text,
-  Clock,
-  Meter,
-  Calendar,
+  Grid,
+  Button,
+  CircularProgress,
+  FormControl,
+  TextField,
+  Typography,
+  makeStyles,
   List,
-} from 'grommet';
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListSubheader,
+} from '@material-ui/core';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
+
+const useStyles = makeStyles((theme) => ({
+  box: {
+    backgroundColor: theme.palette.background.default,
+    minHeight: '30vw',
+    padding: theme.spacing(2),
+  },
+  list: {
+    minWidth: '20vw',
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
 function TimelineView({ setQuery, midLocations }) {
+  const classes = useStyles();
+
   return (
-    <Box
-      flex
-      direction='row'
-      background='dark-2'
-      align='baseline'
-      justify='evenly'
-      height={{ min: '30vw' }}
-      pad='2em'
-    >
-      <Form
-        value={{}}
+    <Grid className={classes.box} container justify='space-between'>
+      <Grid
+        item
         onReset={() => setQuery({})}
         onSubmit={(evt) => {
           const data = new FormData(evt.target);
           setQuery(data.get('address'));
         }}
       >
-        <FormField
-          name='current-location'
-          htmlfor='text-input-id'
-          label='Enter your start and end address'
-        >
-          <TextInput id='text-input' name='address' />
-        </FormField>
-
-        <Box direction='row' gap='medium'>
-          <Button type='submit' primary label='Submit' />
-          <Button type='reset' label='Reset' />
-        </Box>
-      </Form>
-      <Box flex direction='row' justify='evenly' background='dark-2'>
-        <Box gap='0.5vw'>
-          <Text weight='bold' size='large' color='#6FFFB0'>
-            TIMELINE
-          </Text>
-          <List primaryKey='location' secondaryKey='time' data={midLocations} />
-        </Box>
-        <Box direction='column' gap='2vw'>
-          <Box gap='0.5vw' alignSelf='start'>
-            <Text weight='bold' size='large' color='#6FFFB0'>
-              CURRENT TIME
-            </Text>
-            <Clock type='digital' size='xxlarge' />
-          </Box>
-          <Box gap='0.5vw'>
-            <Text weight='bold' size='large' color='#6FFFB0'>
-              JOURNEY PROGRESS
-            </Text>
-            <Meter
-              type='circle'
-              values={[
-                {
-                  value: 60,
-                  label: 'sixty',
-                  onClick: () => {},
-                },
-              ]}
-              aria-label='meter'
-              size='xsmall'
-            />
-          </Box>
-        </Box>
-        <Box gap='0.5vw'>
-          <Calendar
-            size='medium'
-            date={new Date().toISOString()}
-            onSelect={(date) => {}}
-          />
-        </Box>
-      </Box>
-    </Box>
+        <Grid container direction='column' alignItems='flex-start' spacing={2}>
+          <Grid item>
+            <FormControl>
+              <TextField
+                id='address'
+                label='Address'
+                fullWidth
+                placeholder='Enter your start point here'
+                variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button variant='contained' size='medium' color='primary'>
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant='contained' size='medium'>
+                  Reset
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction='row' justify='space-between' spacing={2}>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography variant='h5' color='textSecondary'>
+                TIMELINE
+              </Typography>
+              <Box m={1} />
+              <List
+                className={classes.list}
+                subheader={
+                  <ListSubheader component='div' id='nested-list-subheader'>
+                    Location and timings
+                  </ListSubheader>
+                }
+              >
+                <ListItems items={midLocations} />
+              </List>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography variant='h5' color='textSecondary'>
+                JOURNEY PROGRESS
+              </Typography>
+              <Box m={1} />
+              <CircularProgress
+                variant='determinate'
+                size={100}
+                thickness={8}
+                value={70}
+              />
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography variant='h5' color='textSecondary'>
+                PICK YOUR DATE
+              </Typography>
+              <Box m={1} />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  autoOk
+                  disablePast
+                  animateYearScrolling
+                  orientation='landscape'
+                  variant='static'
+                  openTo='date'
+                  value={new Date()}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 
+function ListItems({ items }) {
+  return items.map(({ location, time }) => {
+    return (
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <LocationCityIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={location} secondary={time} />
+      </ListItem>
+    );
+  });
+}
 export default TimelineView;
