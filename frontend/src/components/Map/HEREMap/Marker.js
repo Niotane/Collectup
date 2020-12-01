@@ -16,6 +16,7 @@ export const Marker = ({
   draggable,
   data,
   query,
+  propCallback,
   ...rest
 }) => {
   const mapContext = React.useContext(MapContext);
@@ -37,6 +38,7 @@ export const Marker = ({
 
         if (map && !marker) {
           let newMarker;
+          const { lat, lng } = position;
           if (React.Children.count(children) > 0) {
             const html = ReactDOMServer.renderToStaticMarkup(
               <div className='dom-marker'>{children}</div>
@@ -63,6 +65,8 @@ export const Marker = ({
 
           map.addObject(newMarker);
           setMarker(newMarker);
+
+          if (propCallback) propCallback(`${lat},${lng}`);
         }
       };
 

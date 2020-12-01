@@ -56,6 +56,10 @@ function MapView() {
 
   // console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
 
+  const addMarker = (newMarker) => {
+    setMarkersList([...markersList, newMarker]);
+  };
+
   return (
     <ErrorBoundary FallbackComponent={() => 'Loading failed...'}>
       <Grid container>
@@ -70,7 +74,11 @@ function MapView() {
               hidpi
               zoom={6}
             >
-              <Markers points={markersList} query={query} />
+              <Markers
+                points={markersList}
+                query={query}
+                addMarkerCallback={addMarker}
+              />
               <RoutePath
                 origin={'48.86,2.31'}
                 destination={'48.86,2.31'}
@@ -92,10 +100,16 @@ function MapView() {
   );
 }
 
-const Markers = ({ points, query }) => {
+const Markers = ({ points, query, addMarkerCallback }) => {
   if (query) {
-    console.log(query);
-    return <Marker query={query} data='Start Location' key={query} />;
+    return (
+      <Marker
+        query={query}
+        data='Start Location'
+        propCallback={addMarkerCallback}
+        key={query}
+      />
+    );
   }
 
   return points.map((point) => {
