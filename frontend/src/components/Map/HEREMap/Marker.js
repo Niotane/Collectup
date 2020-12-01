@@ -6,6 +6,7 @@ import getMarkerIcon from './utils/get-marker-icon';
 import MapContext from './utils/map-context';
 import { setMarkerDragEvent } from './utils/set-drag-event';
 import { events } from './utils/map-events';
+import getGeocode from './apiCalls/getGeocode';
 
 export const Marker = ({
   children,
@@ -14,6 +15,7 @@ export const Marker = ({
   lng,
   draggable,
   data,
+  query,
   ...rest
 }) => {
   const mapContext = React.useContext(MapContext);
@@ -21,9 +23,53 @@ export const Marker = ({
 
   React.useEffect(() => {
     const H = window.H;
-    const { map, behavior } = mapContext;
+    const { map, behavior, platform } = mapContext;
+    let position = undefined;
 
-    if (map && !marker) {
+    if (query) {
+      const searchService = platform.getSearchService();
+      const fetchGeocodes = async () => {
+        const res = await getGeocode(searchService, query);
+
+        if (res) {
+          position = res.items[0].position;
+        }
+
+        if (map && !marker) {
+          let newMarker;
+          if (React.Children.count(children) > 0) {
+            const html = ReactDOMServer.renderToStaticMarkup(
+              <div className='dom-marker'>{children}</div>
+            );
+            const icon = getDomMarkerIcon(html);
+            newMarker = new H.map.DomMarker(position, { icon });
+          } else if (bitmap) {
+            const icon = getMarkerIcon(bitmap);
+
+            newMarker = new H.map.Marker(position, { icon });
+          } else {
+            newMarker = new H.map.Marker(position);
+          }
+          newMarker.setGeometry(position);
+
+          if (data) {
+            newMarker.setData(data);
+          }
+
+          if (behavior && draggable) {
+            newMarker.draggable = draggable;
+            setMarkerDragEvent(map, behavior);
+          }
+
+          map.addObject(newMarker);
+          setMarker(newMarker);
+        }
+      };
+
+      fetchGeocodes();
+    }
+
+    if (map && !marker && !query) {
       let newMarker;
       if (React.Children.count(children) > 0) {
         const html = ReactDOMServer.renderToStaticMarkup(
@@ -50,7 +96,7 @@ export const Marker = ({
       map.addObject(newMarker);
       setMarker(newMarker);
     }
-  }, [bitmap, children, data, draggable, lat, lng, mapContext, marker]);
+  }, [bitmap, children, data, draggable, lat, lng, mapContext, marker, query]);
 
   React.useEffect(() => {
     if (marker) {
@@ -80,7 +126,7 @@ export const Marker = ({
         lng,
       });
     }
-  }, [lat, lng, marker]);
+  }, [marker, lat, lng]);
 
   return null;
 };

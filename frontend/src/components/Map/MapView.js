@@ -8,7 +8,7 @@ import ta from 'time-ago';
 import { HEREMap, Marker, RoutePath } from './HEREMap';
 import TimelineView from './TimelineView';
 import FeedView from './FeedView';
-import FormView from '../Form/FormView';
+import FormView from '../Form/FormField';
 import useAPI from '../../util/useAPI';
 
 Modal.setAppElement('#root');
@@ -23,7 +23,7 @@ function MapView() {
   const classes = useStyles();
 
   const [sendRequest] = useAPI();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(undefined);
   const [viaLocations, setViaLocations] = useState([]);
   const [markersList, setMarkersList] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -70,7 +70,7 @@ function MapView() {
               hidpi
               zoom={6}
             >
-              <Markers points={markersList} />
+              <Markers points={markersList} query={query} />
               <RoutePath
                 origin={'48.86,2.31'}
                 destination={'48.86,2.31'}
@@ -92,8 +92,12 @@ function MapView() {
   );
 }
 
-const Markers = ({ points }) => {
-  console.log(points);
+const Markers = ({ points, query }) => {
+  if (query) {
+    console.log(query);
+    return <Marker query={query} data='Start Location' key={query} />;
+  }
+
   return points.map((point) => {
     const [lat, lng] = point.split(',');
     if (lat && lng)

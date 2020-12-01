@@ -36,44 +36,56 @@ function TimelineView({ setQuery, midLocations }) {
 
   return (
     <Grid className={classes.box} container justify='space-between'>
-      <Grid
-        item
-        onReset={() => setQuery({})}
-        onSubmit={(evt) => {
-          const data = new FormData(evt.target);
-          setQuery(data.get('address'));
-        }}
-      >
-        <Grid container direction='column' alignItems='flex-start' spacing={2}>
-          <Grid item>
-            <FormControl>
-              <TextField
-                id='address'
-                label='Address'
-                fullWidth
-                placeholder='Enter your start point here'
-                variant='outlined'
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <Grid container spacing={2}>
-              <Grid item>
-                <Button variant='contained' size='medium' color='primary'>
-                  Submit
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant='contained' size='medium'>
-                  Reset
-                </Button>
+      <Grid item>
+        <form
+          onReset={() => setQuery({})}
+          onSubmit={(evt) => {
+            evt.preventDefault();
+            const address = evt.target.address.value;
+            setQuery(address);
+          }}
+        >
+          <Grid
+            container
+            direction='column'
+            alignItems='flex-start'
+            spacing={2}
+          >
+            <Grid item>
+              <FormControl>
+                <TextField
+                  id='address'
+                  label='Address'
+                  fullWidth
+                  placeholder='Enter your start point here'
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button
+                    variant='contained'
+                    size='medium'
+                    color='primary'
+                    type='submit'
+                  >
+                    Submit
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant='contained' size='medium' type='reset'>
+                    Reset
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </form>
       </Grid>
       <Grid item>
         <Grid container direction='row' justify='space-between' spacing={2}>
