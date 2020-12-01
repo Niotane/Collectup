@@ -1,4 +1,12 @@
-import { Suspense, useState, useEffect } from 'react';
+import {
+  Suspense,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useLayoutEffect,
+  memo,
+} from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
 import Modal from 'react-modal';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -30,6 +38,7 @@ function MapView() {
   // const [currMarker, setCurrMarker] = useState({});
 
   useEffect(() => {
+    console.log(markersList);
     const fetchMarkers = async () => {
       const response = await sendRequest('/location');
       if (response) {
@@ -43,22 +52,21 @@ function MapView() {
     };
 
     fetchMarkers();
-  }, [sendRequest]);
-
-  useEffect(() => {
-    const newMidLocations = viaLocations.map((loc) => {
-      const relativeTime = ta.ago(loc.time);
-      return { ...loc, time: relativeTime };
-    });
-
-    setViaLocations(newMidLocations);
-  }, []);
+  }, [markersList, sendRequest]);
 
   // console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
 
   const addMarker = (newMarker) => {
     setMarkersList([...markersList, newMarker]);
   };
+
+  const addLocations = useCallback((locations) => {
+    const newLocations = locations.map((loc) => {
+      const relativeTime = ta.ago(loc.time);
+      return { ...loc, time: relativeTime };
+    });
+    setViaLocations(() => [...newLocations]);
+  }, []);
 
   return (
     <ErrorBoundary FallbackComponent={() => 'Loading failed...'}>
@@ -87,7 +95,7 @@ function MapView() {
                 transportMode='truck'
                 strokeColor='#f55b5b'
                 lineWidth={4}
-                setViaLocations={() => setViaLocations}
+                setLocationsCallback={addLocations}
               />
             </HEREMap>
           </Grid>
@@ -120,4 +128,10 @@ const Markers = ({ points, query, addMarkerCallback }) => {
   });
 };
 
+const areEqual = (prevProps, nextProps) => {
+  if (prevProps.viaLocations != nextProps.viaLocations) {
+    return false;
+  }
+  return true;
+};
 export default MapView;
