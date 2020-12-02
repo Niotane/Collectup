@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import reverseGeocodeAsync from './apiCalls/reverseGeocode';
 import calculateRouteAsync from './apiCalls/calculateRoute';
@@ -14,11 +14,9 @@ export const RoutePath = ({
   strokeColor,
   lineWidth,
   setLocationsCallback,
-  ...props
 }) => {
   const mapContext = React.useContext(MapContext);
   const [routePath, setRoutePath] = React.useState(undefined);
-  const [viaLocations, setLocations] = React.useState([]);
 
   React.useEffect(() => {
     const H = window.H;
@@ -87,14 +85,8 @@ export const RoutePath = ({
     transportMode,
     strokeColor,
     lineWidth,
-    mapContext,
+    setLocationsCallback,
   ]);
-
-  // React.useEffect(() => {
-  //   if (viaLocations) {
-  //     setLocationsCallback(viaLocations);
-  //   }
-  // }, []);
 
   return null;
 };
@@ -108,7 +100,7 @@ const fetchLocations = async (searchService, locations) => {
     notices,
   } of locations) {
     const res = await reverseGeocodeAsync(searchService, { lat, lng });
-    newLocations.push({ location: res.items[0].address.label, time, notices });
+    newLocations.push({ location: res.items[0].title, time, notices });
   }
 
   return newLocations;

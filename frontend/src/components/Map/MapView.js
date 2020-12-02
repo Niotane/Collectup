@@ -1,12 +1,4 @@
-import {
-  Suspense,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useLayoutEffect,
-  memo,
-} from 'react';
+import { Suspense, useState, useEffect, useCallback } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
 import Modal from 'react-modal';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -38,11 +30,10 @@ function MapView() {
   // const [currMarker, setCurrMarker] = useState({});
 
   useEffect(() => {
-    console.log(markersList);
     const fetchMarkers = async () => {
       const response = await sendRequest('/location');
       if (response) {
-        console.log(response);
+        console.log('[*] User Posts', response);
         setPosts(response.data);
         const newMarkers = response.data.map(
           ({ location: { lat, lng } }) => `${lat},${lng}`
@@ -52,7 +43,7 @@ function MapView() {
     };
 
     fetchMarkers();
-  }, [markersList, sendRequest]);
+  }, [sendRequest]);
 
   // console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
 
@@ -65,7 +56,7 @@ function MapView() {
       const relativeTime = ta.ago(loc.time);
       return { ...loc, time: relativeTime };
     });
-    setViaLocations(() => [...newLocations]);
+    setViaLocations([...newLocations]);
   }, []);
 
   return (
@@ -128,10 +119,4 @@ const Markers = ({ points, query, addMarkerCallback }) => {
   });
 };
 
-const areEqual = (prevProps, nextProps) => {
-  if (prevProps.viaLocations != nextProps.viaLocations) {
-    return false;
-  }
-  return true;
-};
 export default MapView;

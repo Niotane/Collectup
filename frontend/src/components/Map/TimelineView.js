@@ -149,7 +149,7 @@ function TimelineView({ setQuery, midLocations }) {
 function ListItems({ items }) {
   return items.map(({ location, time }) => {
     return (
-      <ListItem>
+      <ListItem key={location}>
         <ListItemAvatar>
           <Avatar>
             <LocationCityIcon />
