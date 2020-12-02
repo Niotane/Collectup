@@ -1,6 +1,7 @@
 import React from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import { Clock } from 'grommet';
 import {
   Avatar,
   Box,
@@ -29,14 +30,31 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '20vw',
     backgroundColor: theme.palette.background.paper,
   },
+  clock: {
+    fontFamily: `'Montserrat', sans-serif`,
+    fontWeight: '600',
+    color: '#7D4CDB',
+  },
+  heading: {
+    fontFamily: `'Montserrat', sans-serif`,
+    fontWeight: 'bold',
+  },
 }));
 
 function TimelineView({ setQuery, midLocations }) {
   const classes = useStyles();
 
   return (
-    <Grid className={classes.box} container justify='space-between'>
-      <Grid item>
+    <Grid className={classes.box} container justify='flex-start'>
+      <Grid item sm={3}>
+        <Typography
+          variant='h5'
+          color='textSecondary'
+          className={classes.heading}
+        >
+          PICK UP LOCATION
+        </Typography>
+        <Box m={4} />
         <form
           onReset={() => setQuery({})}
           onSubmit={(evt) => {
@@ -87,18 +105,26 @@ function TimelineView({ setQuery, midLocations }) {
           </Grid>
         </form>
       </Grid>
-      <Grid item>
-        <Grid container direction='row' justify='space-between' spacing={2}>
+      <Grid item sm={9}>
+        <Grid container direction='row' justify='space-between'>
           <Grid item>
             <Grid container direction='column' alignItems='flex-start'>
-              <Typography variant='h5' color='textSecondary'>
+              <Typography
+                variant='h5'
+                color='textSecondary'
+                className={classes.heading}
+              >
                 TIMELINE
               </Typography>
               <Box m={1} />
               <List
                 className={classes.list}
                 subheader={
-                  <ListSubheader component='div' id='nested-list-subheader'>
+                  <ListSubheader
+                    component='div'
+                    id='nested-list-subheader'
+                    className={classes.heading}
+                  >
                     Location and timings
                   </ListSubheader>
                 }
@@ -109,7 +135,24 @@ function TimelineView({ setQuery, midLocations }) {
           </Grid>
           <Grid item>
             <Grid container direction='column' alignItems='center'>
-              <Typography variant='h5' color='textSecondary'>
+              <Typography
+                variant='h5'
+                color='textSecondary'
+                className={classes.heading}
+              >
+                LOCAL TIME
+              </Typography>
+              <Box m={1} />
+              <Box className={classes.clock}>
+                <Clock type='digital' size='xlarge' />
+              </Box>
+              <Box m={4} />
+
+              <Typography
+                variant='h5'
+                color='textSecondary'
+                className={classes.heading}
+              >
                 JOURNEY PROGRESS
               </Typography>
               <Box m={1} />
@@ -123,7 +166,11 @@ function TimelineView({ setQuery, midLocations }) {
           </Grid>
           <Grid item>
             <Grid container direction='column' alignItems='center'>
-              <Typography variant='h5' color='textSecondary'>
+              <Typography
+                variant='h5'
+                color='textSecondary'
+                className={classes.heading}
+              >
                 PICK YOUR DATE
               </Typography>
               <Box m={1} />
@@ -132,7 +179,7 @@ function TimelineView({ setQuery, midLocations }) {
                   autoOk
                   disablePast
                   animateYearScrolling
-                  orientation='landscape'
+                  orientation='portrait'
                   variant='static'
                   openTo='date'
                   value={new Date()}

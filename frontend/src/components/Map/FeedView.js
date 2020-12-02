@@ -53,6 +53,15 @@ const useStyles = makeStyles((theme) => ({
     height: '3vh',
     overflowY: 'hide',
   },
+  heading: {
+    fontFamily: `'Montserrat', sans-serif`,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  subheading: {
+    fontFamily: `'Montserrat', sans-serif`,
+    fontWeight: '800',
+  },
 }));
 
 export default function FeedView({ posts }) {
@@ -76,8 +85,8 @@ export default function FeedView({ posts }) {
       <Grid item xs={12}>
         <Grid container justify='center' spacing={3}>
           <Grid item>
-            <Typography variant='h2' color='textPrimary'>
-              <strong>My Feed</strong>
+            <Typography variant='h2' className={classes.heading}>
+              MY FEED
             </Typography>
           </Grid>
           <Grid item>
@@ -112,8 +121,11 @@ function Posts({ posts }) {
           />
           <CardHeader
             title={post.category}
-            titleTypographyProps={{ variant: 'h6' }}
             subheader={ta.ago(post.dateListed)}
+            classes={{
+              title: classes.subheading,
+              subheader: classes.subheading,
+            }}
           />
           <CardContent className={classes.fixedCard}>
             <Typography variant='body2' color='textSecondary' component='p'>
