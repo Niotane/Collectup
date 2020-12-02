@@ -90,7 +90,7 @@ function TimelineView({ setQuery, midLocations }) {
       <Grid item>
         <Grid container direction='row' justify='space-between' spacing={2}>
           <Grid item>
-            <Grid container direction='column' alignItems='center'>
+            <Grid container direction='column' alignItems='flex-start'>
               <Typography variant='h5' color='textSecondary'>
                 TIMELINE
               </Typography>
@@ -149,7 +149,7 @@ function TimelineView({ setQuery, midLocations }) {
 function ListItems({ items }) {
   return items.map(({ location, time }) => {
     return (
-      <ListItem>
+      <ListItem key={location}>
         <ListItemAvatar>
           <Avatar>
             <LocationCityIcon />

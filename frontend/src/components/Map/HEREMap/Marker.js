@@ -27,6 +27,8 @@ export const Marker = ({
     const { map, behavior, platform } = mapContext;
     let position = undefined;
 
+    console.log('Marker useEffect');
+
     if (query) {
       const searchService = platform.getSearchService();
       const fetchGeocodes = async () => {
@@ -100,7 +102,18 @@ export const Marker = ({
       map.addObject(newMarker);
       setMarker(newMarker);
     }
-  }, [bitmap, children, data, draggable, lat, lng, mapContext, marker, query]);
+  }, [
+    bitmap,
+    children,
+    data,
+    draggable,
+    lat,
+    lng,
+    mapContext,
+    marker,
+    propCallback,
+    query,
+  ]);
 
   React.useEffect(() => {
     if (marker) {

@@ -13,14 +13,16 @@ export const RoutePath = ({
   transportMode,
   strokeColor,
   lineWidth,
-  setViaLocations,
+  setLocationsCallback,
 }) => {
   const mapContext = React.useContext(MapContext);
+  // eslint-disable-next-line no-unused-vars
   const [routePath, setRoutePath] = React.useState(undefined);
 
   React.useEffect(() => {
     const H = window.H;
     const { platform, map } = mapContext;
+    console.log('RoutePath useEffect 1');
 
     if (platform) {
       const router = platform.getRoutingService(null, 8);
@@ -51,8 +53,6 @@ export const RoutePath = ({
 
           const geoLocations = await fetchLocations(searchService, locations);
 
-          setViaLocations(geoLocations);
-
           const linestrings = sections.map(({ polyline }) =>
             H.geo.LineString.fromFlexiblePolyline(polyline)
           );
@@ -62,17 +62,23 @@ export const RoutePath = ({
             style: { strokeColor, lineWidth },
           });
 
-          if (routePath) {
-            map.removeObject(routePath);
-          }
+          setRoutePath((r) => {
+            if (r) map.removeObject(r);
+            else return r;
+          });
+
           map.addObject(newRoutePath);
 
-          setRoutePath(routePath);
+          // setLocations(geoLocations);
+          if (setLocationsCallback) {
+            setLocationsCallback(geoLocations);
+          }
         };
 
         fetchRoute();
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     origin,
     destination,
@@ -81,9 +87,7 @@ export const RoutePath = ({
     transportMode,
     strokeColor,
     lineWidth,
-    mapContext,
-    routePath,
-    setViaLocations,
+    setLocationsCallback,
   ]);
 
   return null;
@@ -94,9 +98,11 @@ const fetchLocations = async (searchService, locations) => {
 
   for (const {
     location: { lat, lng },
+    time,
+    notices,
   } of locations) {
     const res = await reverseGeocodeAsync(searchService, { lat, lng });
-    newLocations.push(res.items[0].address.label);
+    newLocations.push({ location: res.items[0].address.label, time, notices });
   }
 
   return newLocations;
