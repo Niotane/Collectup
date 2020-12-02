@@ -1,7 +1,11 @@
 runtime: nodejs12
+env: flex
+
+env_variables:
+  GCLOUD_STORAGE_BUCKET: collectup-images
 
 handlers:
-- url: /.*
-  secure: always
-  redirect_http_response_code: 301
-  script: auto
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
