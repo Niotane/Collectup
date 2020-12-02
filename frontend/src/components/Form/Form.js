@@ -69,6 +69,7 @@ function Main() {
               { id: 'electrical', title: 'electrical' },
               { id: 'metal', title: 'metal' },
             ]}
+            defaultValue=''
           />
         </Grid>
         <Grid item xs={6}>
