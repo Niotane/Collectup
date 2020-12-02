@@ -18,9 +18,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const BASE_URL = 'https://oxford-hackathon.el.r.appspot.com';
-// const BASE_URL = 'http://localhost:8080';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '40vh',
