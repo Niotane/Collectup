@@ -1,5 +1,6 @@
 import './ImageUploadView.css';
 import React, { useRef, useState, useEffect } from 'react';
+import { Button } from '@material-ui/core';
 
 const ImageUpload = (props) => {
   const [file, setFile] = useState();
@@ -41,20 +42,28 @@ const ImageUpload = (props) => {
   return (
     <div className='form-control'>
       <input
+        hidden
         id={props.id}
         ref={filePickerRef}
-        style={{ display: 'none' }}
         type='file'
         accept='.jpg,.png,.jpeg'
         onChange={pickedHandler}
       />
-      <div className={`image-upload ${props.center && 'center'}`}>
-        <div className='image-upload__preview'>
-          {previewUrl && <img src={previewUrl} alt='Preview' />}
-          {!previewUrl && <p>Please pick an image.</p>}
+      <label htmlFor='raised-button-file'>
+        <div className={`image-upload ${props.center && 'center'}`}>
+          <div className='image-upload__preview'>
+            {previewUrl && <img src={previewUrl} alt='Preview' />}
+            {!previewUrl && <p>Please pick an image.</p>}
+          </div>
+          <Button
+            variant='contained'
+            component='span'
+            onClick={pickImageHandler}
+          >
+            PICK IMAGE
+          </Button>
         </div>
-        <button onClick={pickImageHandler}>PICK IMAGE</button>
-      </div>
+      </label>
       {!isValid && <p>{props.errorText}</p>}
     </div>
   );

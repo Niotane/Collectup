@@ -1,9 +1,11 @@
-import { Form, FormField, TextInput, Select } from 'grommet';
-import ImageUploadView from './ImageUploadView';
-import useForm from './useForm';
+import { Box, Grid } from '@material-ui/core';
+
+import useForm from './utils/useForm';
+import Form from './utils/Form';
+import Controls from './utils/Controls';
 import formHandler from './formHandler';
 
-function FormView() {
+function Main() {
   const [formState, inputHandler] = useForm(
     {
       title: {
@@ -18,7 +20,15 @@ function FormView() {
         value: '',
         isValid: false,
       },
+      city: {
+        value: '',
+        isValid: false,
+      },
       coordinates: {
+        value: '',
+        isValid: false,
+      },
+      category: {
         value: '',
         isValid: false,
       },
@@ -31,49 +41,53 @@ function FormView() {
   );
 
   return (
-    <Form
-      value={{}}
-      onReset={() => {}}
-      onSubmit={(evt) => formHandler(evt, formState)}
-    >
-      <FormField name='name' htmlfor='text-input-id' label='Name'>
-        <TextInput id='text-input-id' name='name' />
-      </FormField>
-      <FormField name='phone' htmlfor='text-input-id' label='Phone No.'>
-        <TextInput id='text-input-id2' name='phone' />
-      </FormField>
-      <FormField
-        name='description'
-        htmlfor='text-input-id'
-        label='Item Description'
-      >
-        <TextInput id='text-input-id3' name='description' />
-      </FormField>
-      <FormField name='address' htmlfor='text-input-id' label='Address'>
-        <TextInput id='text-input-id4' name='address' />
-      </FormField>
-      <FormField name='country' htmlfor='text-input-id' label='Country'>
-        <TextInput id='text-input-id5' name='country' />
-      </FormField>
-      <FormField name='city' htmlfor='text-input-id' label='City'>
-        <TextInput id='text-input-id6' name='city' />
-      </FormField>
-      <FormField name='category' htmlfor='text-input-id' label='Category'>
-        <Select
-          options={['household', 'electrical', 'metal']}
-          name='category'
-        />
-      </FormField>
-      <FormField name='image' htmlfor='text-input-id' label='Image'>
-        <ImageUploadView
-          id='image'
-          name='image'
-          onInput={inputHandler}
-          errorText='Please provide an image.'
-        />
-      </FormField>
+    <Form onSubmit={(evt) => formHandler(evt, formState)}>
+      <Grid container>
+        <Grid item xs={6}>
+          <Controls.Input id='name' name='name' label='My Name' />
+          <Controls.Input id='title' name='title' label='Title' />
+          <Controls.Input
+            id='description'
+            name='description'
+            label='Description'
+          />
+          <Controls.Input id='address' name='address' label='Address' />
+          <Controls.Input id='city' name='city' label='City' />
+          <Controls.Input
+            id='coordinates'
+            name='coordinates'
+            label='Co-ordinates'
+            value='50.9375,6.9603'
+            disabled
+          />
+          <Controls.Select
+            id='category'
+            name='category'
+            label='Item category'
+            options={[
+              { id: 'household', title: 'household' },
+              { id: 'electrical', title: 'electrical' },
+              { id: 'metal', title: 'metal' },
+            ]}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Controls.ImageUpload
+            id='image'
+            name='image'
+            label='Image'
+            onInput={inputHandler}
+            errorText='Please provide an image.'
+          />
+          <Box m={10} />
+          <div>
+            <Controls.Button type='submit' text='Submit' />
+            <Controls.Button text='Reset' color='default' onClick={() => {}} />
+          </div>
+        </Grid>
+      </Grid>
     </Form>
   );
 }
 
-export default FormView;
+export default Main;
