@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({
   user: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
+  title: { type: String, required: true },
   description: String,
   dateListed: { type: Date, required: true },
   country: { type: String, required: true },
