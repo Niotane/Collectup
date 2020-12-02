@@ -1,5 +1,4 @@
 runtime: nodejs12
-env: flex
 
 env_variables:
   GCLOUD_STORAGE_BUCKET: collectup-images
