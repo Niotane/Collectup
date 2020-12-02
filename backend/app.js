@@ -1,16 +1,37 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
+const multer = require('multer');
+
 const Item = require('./models/items');
 const cors = require('cors');
-const fileUpload = require('./fileUpload');
+const uploadImage = require('./helpers');
 
 const app = express();
 
+app.disable('x-powered-by');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-//app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+const MIME_TYPE_MAP = {
+  'image/png': '.png',
+  'image/jpeg': '.jepg',
+  'image/jpg': '.jpg',
+};
+
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    // no larger than 10MB.
+    fileSize: 10 * 1024 * 1024,
+  },
+  fileFilter: (req, file, callback) => {
+    const isValid = !!MIME_TYPE_MAP[file.mimetype];
+    let error = isValid ? null : new Error('Invalid mime type!');
+    callback(error, isValid);
+  },
+});
 
 app.get('/', (req, res) => {
   res.send(`[x] API Live - ${Date.now()}`);
@@ -53,11 +74,8 @@ app.get('/filter', async (req, res) => {
   res.json({ data });
 });
 
-// images folder host photos
-app.use('/images', express.static('images'));
-
 // add new post
-app.post('/add', fileUpload.single('image', 1), (req, res) => {
+app.post('/add', multerMid.single('image'), async (req, res) => {
   let {
     user,
     title,
@@ -69,7 +87,11 @@ app.post('/add', fileUpload.single('image', 1), (req, res) => {
   } = req.body;
 
   location = JSON.parse(location);
-  const imageURL = req.file.path;
+
+  let imageURL = '';
+  if (req.file) {
+    imageURL = await uploadImage(req.file);
+  }
 
   const newItem = Item({
     user,
@@ -114,4 +136,6 @@ mongoose
     console.log(err);
   });
 
-app.listen(8080);
+app.listen(8080, () => {
+  console.log('API started on port 8080');
+});
