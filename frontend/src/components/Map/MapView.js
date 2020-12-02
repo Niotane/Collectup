@@ -8,7 +8,7 @@ import ta from 'time-ago';
 import { HEREMap, Marker, RoutePath } from './HEREMap';
 import TimelineView from './TimelineView';
 import FeedView from './FeedView';
-import FormView from '../Form/FormField';
+import FormView from '../Form/FormView';
 import useAPI from '../../util/useAPI';
 
 Modal.setAppElement('#root');
