@@ -16,6 +16,7 @@ export const Marker = ({
   draggable,
   data,
   query,
+  isOrigin,
   propCallback,
   ...rest
 }) => {
@@ -26,6 +27,7 @@ export const Marker = ({
     const H = window.H;
     const { map, behavior, platform } = mapContext;
     let position = undefined;
+    let newMarker;
 
     console.log('Marker useEffect');
 
@@ -34,12 +36,11 @@ export const Marker = ({
       const fetchGeocodes = async () => {
         const res = await getGeocode(searchService, query);
 
-        if (res) {
+        if (res.items[0]) {
           position = res.items[0].position;
         }
 
-        if (map && !marker) {
-          let newMarker;
+        if (map && !marker && position) {
           const { lat, lng } = position;
           if (React.Children.count(children) > 0) {
             const html = ReactDOMServer.renderToStaticMarkup(
@@ -68,7 +69,13 @@ export const Marker = ({
           map.addObject(newMarker);
           setMarker(newMarker);
 
-          if (propCallback) propCallback(`${lat},${lng}`);
+          if ('addMarker' in propCallback && !isOrigin) {
+            propCallback.addMarker(`${lat},${lng}`);
+          }
+
+          if ('setOrigin' in propCallback && isOrigin) {
+            propCallback.setOrigin(`${lat},${lng}`);
+          }
         }
       };
 
@@ -76,7 +83,6 @@ export const Marker = ({
     }
 
     if (map && !marker && !query) {
-      let newMarker;
       if (React.Children.count(children) > 0) {
         const html = ReactDOMServer.renderToStaticMarkup(
           <div className='dom-marker'>{children}</div>
@@ -107,6 +113,7 @@ export const Marker = ({
     children,
     data,
     draggable,
+    isOrigin,
     lat,
     lng,
     mapContext,
