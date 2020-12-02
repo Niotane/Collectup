@@ -25,7 +25,8 @@ function MapView() {
   const [sendRequest] = useAPI();
   const [query, setQuery] = useState(undefined);
   const [viaLocations, setViaLocations] = useState([]);
-  const [markersList, setMarkersList] = useState([]);
+  const [markersList, setMarkersList] = useState({ origin: '', markers: [] });
+  const [origin, setOrigin] = useState('48.86,2.31');
   const [posts, setPosts] = useState([]);
   // const [currMarker, setCurrMarker] = useState({});
 
@@ -38,17 +39,20 @@ function MapView() {
         const newMarkers = response.data.map(
           ({ location: { lat, lng } }) => `${lat},${lng}`
         );
-        setMarkersList(newMarkers);
+        setMarkersList({ origin, markers: newMarkers });
       }
     };
 
     fetchMarkers();
-  }, [sendRequest]);
+  }, [origin, sendRequest]);
 
   // console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
 
   const addMarker = (newMarker) => {
-    setMarkersList([...markersList, newMarker]);
+    setMarkersList((prev) => ({
+      origin: prev.origin,
+      markers: [...prev.markers, newMarker],
+    }));
   };
 
   const addLocations = useCallback((locations) => {
@@ -76,12 +80,13 @@ function MapView() {
               <Markers
                 points={markersList}
                 query={query}
-                addMarkerCallback={addMarker}
+                addMarker={addMarker}
+                setOrigin={setOrigin}
               />
               <RoutePath
-                origin={'48.86,2.31'}
-                destination={'48.86,2.31'}
-                via={markersList}
+                origin={origin}
+                destination={origin}
+                via={markersList.markers}
                 returnType='polyline'
                 transportMode='truck'
                 strokeColor='#f55b5b'
@@ -99,19 +104,20 @@ function MapView() {
   );
 }
 
-const Markers = ({ points, query, addMarkerCallback }) => {
+const Markers = ({ points, query, addMarker, setOrigin }) => {
   if (query) {
     return (
       <Marker
+        isOrigin
         query={query}
         data='Start Location'
-        propCallback={addMarkerCallback}
+        propCallback={{ addMarker, setOrigin }}
         key={query}
       />
     );
   }
 
-  return points.map((point) => {
+  return points.markers.map((point) => {
     const [lat, lng] = point.split(',');
     if (lat && lng)
       return <Marker lat={lat} lng={lng} data='demo1' key={point} />;
