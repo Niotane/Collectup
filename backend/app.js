@@ -60,13 +60,12 @@ app.use('/images', express.static('images'));
 app.post('/add', fileUpload.single('image', 1), (req, res) => {
   let {
     user,
-    phoneNumber,
+    title,
     description,
-    country,
+    city,
     address,
     location,
     category,
-    city,
   } = req.body;
 
   location = JSON.parse(location);
@@ -74,11 +73,10 @@ app.post('/add', fileUpload.single('image', 1), (req, res) => {
 
   const newItem = Item({
     user,
-    phoneNumber,
+    title,
     imageURL,
     description,
     dateListed: new Date(),
-    country,
     address,
     location,
     category,
