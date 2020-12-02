@@ -41,7 +41,7 @@ export function ImageUpload(props) {
 }
 
 export function Select(props) {
-  const { name, id, label, value, error = null, onChange, options } = props;
+  const { name, id, label, value, defaultValue, error = null, onChange, options } = props;
 
   return (
     <FormControl variant='outlined' {...(error && { error: true })}>
@@ -51,6 +51,7 @@ export function Select(props) {
         label={label}
         name={name}
         value={value}
+        defaultValue={defaultValue}
         onChange={onChange}
       >
         <MenuItem value=''>None</MenuItem>

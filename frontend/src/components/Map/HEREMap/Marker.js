@@ -29,8 +29,6 @@ export const Marker = ({
     let position = undefined;
     let newMarker;
 
-    console.log('Marker useEffect');
-
     if (query) {
       const searchService = platform.getSearchService();
       const fetchGeocodes = async () => {

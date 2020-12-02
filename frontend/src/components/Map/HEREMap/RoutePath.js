@@ -22,7 +22,6 @@ export const RoutePath = ({
   React.useEffect(() => {
     const H = window.H;
     const { platform, map } = mapContext;
-    console.log('RoutePath useEffect 1');
 
     if (platform) {
       const router = platform.getRoutingService(null, 8);

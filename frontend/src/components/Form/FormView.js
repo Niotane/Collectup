@@ -60,7 +60,6 @@ function FormView() {
         fullScreen
         open={modalIsOpen}
         onClose={() => setIsOpen(false)}
-        contentLabel='Add your details here'
         TransitionComponent={Transition}
       >
         <AppBar className={classes.appBar}>
