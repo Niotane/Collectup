@@ -19,6 +19,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const BASE_URL = 'https://oxford-hackathon.el.r.appspot.com';
+// const BASE_URL = 'http://localhost:8080';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,7 +118,7 @@ function Posts({ posts }) {
           <CardMedia
             alt='Contemplative Reptile'
             className={classes.media}
-            image={`${BASE_URL}/${post.imageURL}`}
+            image={post.imageURL}
           />
           <CardHeader
             title={post.category}
