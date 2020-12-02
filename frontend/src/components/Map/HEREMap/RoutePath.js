@@ -38,7 +38,7 @@ export const RoutePath = ({
             transportMode,
           });
 
-          console.log(res);
+          console.log('[*] Route result', res);
           const { routes } = res;
           const sections = routes[0].sections;
           const locations = sections.map(
@@ -78,7 +78,7 @@ export const RoutePath = ({
         fetchRoute();
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     origin,
     destination,
