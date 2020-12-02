@@ -16,6 +16,7 @@ export const RoutePath = ({
   setLocationsCallback,
 }) => {
   const mapContext = React.useContext(MapContext);
+  // eslint-disable-next-line no-unused-vars
   const [routePath, setRoutePath] = React.useState(undefined);
 
   React.useEffect(() => {
@@ -77,6 +78,7 @@ export const RoutePath = ({
         fetchRoute();
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     origin,
     destination,
