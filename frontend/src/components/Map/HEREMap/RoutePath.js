@@ -102,7 +102,7 @@ const fetchLocations = async (searchService, locations) => {
     notices,
   } of locations) {
     const res = await reverseGeocodeAsync(searchService, { lat, lng });
-    newLocations.push({ location: res.items[0].title, time, notices });
+    newLocations.push({ location: res.items[0].address.label, time, notices });
   }
 
   return newLocations;
