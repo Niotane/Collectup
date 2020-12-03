@@ -2,17 +2,19 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const axios = require('axios').default;
 
 const Item = require('./models/items');
 const cors = require('cors');
 const uploadImage = require('./helpers');
+const { ActionToHTTPMethod } = require('@google-cloud/storage/build/src/file');
 
 const app = express();
 
+app.use(cors());
 app.disable('x-powered-by');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
 
 const MIME_TYPE_MAP = {
   'image/png': '.png',
@@ -110,6 +112,29 @@ app.post('/add', multerMid.single('image'), async (req, res) => {
     .save()
     .then(() => res.json({ postAdded: true }))
     .catch((err) => console.log(err.message));
+});
+
+app.post('/forward', async (req, res) => {
+  const { url, method, body, authorization } = req.body;
+  const headers = {
+    Authorization: authorization,
+  };
+
+  try {
+    if (method === 'GET') {
+      const response = await axios.get(url, {
+        headers: headers,
+      });
+      return res.send(response.data);
+    }
+    if (method === 'POST') {
+      const response = await axios.post(url, body, { headers: headers });
+      return res.send(response.data);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ data: 'Something went wrong' });
+  }
 });
 
 // throws error if API not listed above
