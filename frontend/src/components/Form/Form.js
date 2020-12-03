@@ -1,11 +1,15 @@
+import { useState, useEffect } from 'react';
 import { Box, Grid } from '@material-ui/core';
 
 import useForm from './utils/useForm';
 import Form from './utils/Form';
 import Controls from './utils/Controls';
 import formHandler from './formHandler';
+import getCoordinates from './utils/apiCalls';
 
 function Main() {
+  const [query, setQuery] = useState('Paris, France');
+  const [position, setPosition] = useState('');
   const [formState, inputHandler] = useForm(
     {
       title: {
@@ -40,6 +44,14 @@ function Main() {
     false
   );
 
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      const { lat, lng } = await getCoordinates(query);
+      setPosition(`${lat},${lng}`);
+    }, 800);
+    return () => clearTimeout(timeOutId);
+  }, [query]);
+
   return (
     <Form onSubmit={(evt) => formHandler(evt, formState)}>
       <Grid container>
@@ -51,13 +63,19 @@ function Main() {
             name='description'
             label='Description'
           />
-          <Controls.Input id='address' name='address' label='Address' />
+          <Controls.Input
+            id='address'
+            name='address'
+            label='Address'
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
           <Controls.Input id='city' name='city' label='City' />
           <Controls.Input
             id='coordinates'
             name='coordinates'
             label='Co-ordinates'
-            value='50.9375,6.9603'
+            value={position}
             disabled
           />
           <Controls.Select

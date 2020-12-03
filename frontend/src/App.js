@@ -3,6 +3,8 @@ import { Container, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import MapView from './components/Map/MapView';
 import FooterView from './components/Footer/FooterView';
 import HeaderView from './components/Header/HeaderView';
+import { useEffect } from 'react';
+import generateToken from './util/generateToken';
 
 const theme = createMuiTheme({
   palette: {
@@ -30,6 +32,10 @@ Well you look serious for this project. Feel like contributing?
 Have a look at https://github.com/Niotane/Collectup
 
 `);
+
+  useEffect(() => {
+    generateToken();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
