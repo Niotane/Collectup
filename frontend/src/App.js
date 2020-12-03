@@ -1,9 +1,10 @@
 import { Container, createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 import MapView from './components/Map/MapView';
+import DriverView from './components/Map/DriverView';
 import FooterView from './components/Footer/FooterView';
 import HeaderView from './components/Header/HeaderView';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import generateToken from './util/generateToken';
 
 const theme = createMuiTheme({
@@ -33,6 +34,8 @@ Have a look at https://github.com/Niotane/Collectup
 
 `);
 
+  const [driverView, setDriverView] = useState(false);
+
   useEffect(() => {
     generateToken();
   }, []);
@@ -40,8 +43,9 @@ Have a look at https://github.com/Niotane/Collectup
   return (
     <ThemeProvider theme={theme}>
       <Container disableGutters maxWidth='xl'>
-        <HeaderView />
-        <MapView />
+        <HeaderView setDriverView={setDriverView} driverView={driverView} />
+        {!driverView && <MapView />}
+        {driverView && <DriverView />}
         <FooterView />
       </Container>
     </ThemeProvider>
