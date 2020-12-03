@@ -49,6 +49,7 @@ function generateToken() {
           Date.now() + result.expires_in
         ).toString();
         localStorage.setItem('collectupAuth', JSON.stringify(result));
+        console.log('[*] OAuth Token generated.');
       }
     }
   );
