@@ -3,9 +3,10 @@ const OAuth = require('oauth-1.0a');
 const crypto = require('crypto'); // dependency package for OAuth-1.0a
 
 function generateToken() {
-  const collectupAuth = JSON.parse(localStorage.getItem('collectupAuth'));
+  let collectupAuth = localStorage.getItem('collectupAuth');
 
   if (collectupAuth) {
+    collectupAuth = JSON.parse(collectupAuth);
     if (new Date(collectupAuth.expiresOn) > Date.now()) {
       console.log('[*] OAuth Token exists...');
       return;
