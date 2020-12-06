@@ -11,6 +11,7 @@ import {
   Typography,
   CardMedia,
   Collapse,
+  Divider,
 } from '@material-ui/core';
 import PuffLoader from 'react-spinners/PuffLoader';
 import ta from 'time-ago';
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '40vh',
     minHeight: '40vh',
-    backgroundColor: '',
+    backgroundColor: '#268386',
     margin: 'sm',
     flexJustify: 'around',
     direction: 'row',
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotate(180deg)',
   },
   box: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#005B5E',
     minHeight: '30vw',
     padding: theme.spacing(2),
   },
@@ -67,28 +68,23 @@ export default function FeedView({ posts }) {
 
   if (posts.length === 0) {
     return (
-      <Grid
-        className={classes.box}
-        container
-        justify='center'
-        alignItems='center'
-      >
+      <Grid className={classes.box} container>
         <PuffLoader size={30} color='#b390f5' />
       </Grid>
     );
   }
 
   return (
-    <Grid className={classes.box} container justify='space-between'>
-      <Grid item xs={12}>
-        <Grid container justify='center' spacing={3}>
-          <Grid item>
+    <Grid className={classes.box} container>
+      <Grid item xs={15}>
+        <Grid container justify='center' alignItems='center' spacing={4}>
+          <Grid item xs={10}>
             <Typography variant='h2' className={classes.heading}>
               MY FEED
             </Typography>
           </Grid>
           <Grid item>
-            <Grid container justify='flex-start' spacing={2}>
+            <Grid container spacing={2}>
               <Posts posts={posts} />
             </Grid>
           </Grid>
@@ -129,6 +125,7 @@ function Posts({ posts }) {
             <Typography variant='body2' color='textSecondary' component='p'>
               {post.description}
             </Typography>
+            <Divider />
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label='add to favorites'>
