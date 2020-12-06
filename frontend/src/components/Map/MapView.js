@@ -15,7 +15,7 @@ Modal.setAppElement('#root');
 
 const useStyles = makeStyles((theme) => ({
   map: {
-    minHeight: '30vw',
+    minHeight: '32vw',
   },
 }));
 
