@@ -21,7 +21,7 @@ import LocationCityIcon from '@material-ui/icons/LocationCity';
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    backgroundColor: '#393939',
+    backgroundColor: 'white',
     minHeight: '15vw',
     padding: theme.spacing(2),
   },
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
+    color: '#005B5E',
   },
 }));
 

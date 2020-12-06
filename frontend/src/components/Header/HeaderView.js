@@ -74,7 +74,7 @@ function HeaderView({ setDriverView, driverView }) {
           <div className={classes.logo}>
             <div className={classes.logoImg}>
               <img
-                src='https://i.ibb.co/30VbMc9/Logo-wo-text.png'
+                src='https://i.ibb.co/5TbtcBc/test.png'
                 alt='logo'
                 className={classes.logoImg}
               />
