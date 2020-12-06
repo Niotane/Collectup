@@ -1,0 +1,152 @@
+{
+  "results": [
+    {
+      "waypoints": [
+        {
+          "id": "start",
+          "lat": 48.13641,
+          "lng": 11.57754,
+          "sequence": 0,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-07T01:10:44Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "destination4",
+          "lat": 50.1109,
+          "lng": 8.6821,
+          "sequence": 1,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-07T07:34:58Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "destination6",
+          "lat": 50.9375,
+          "lng": 6.9603,
+          "sequence": 2,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-07T10:55:18Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "destination5",
+          "lat": 53.5511,
+          "lng": 9.9937,
+          "sequence": 3,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-07T18:03:44Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "destination3",
+          "lat": 52.5166,
+          "lng": 13.3833,
+          "sequence": 4,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-07T22:59:19Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "destination2",
+          "lat": 52.53515,
+          "lng": 13.390106,
+          "sequence": 5,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-07T23:11:17Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "destination1",
+          "lat": 51.3397,
+          "lng": 12.3731,
+          "sequence": 6,
+          "estimatedArrival": null,
+          "estimatedDeparture": "2020-12-08T02:41:37Z",
+          "fulfilledConstraints": []
+        },
+        {
+          "id": "end",
+          "lat": 48.13641,
+          "lng": 11.57754,
+          "sequence": 7,
+          "estimatedArrival": "2020-12-08T09:26:21Z",
+          "estimatedDeparture": null,
+          "fulfilledConstraints": []
+        }
+      ],
+      "distance": "1941650",
+      "time": "116137",
+      "interconnections": [
+        {
+          "fromWaypoint": "start",
+          "toWaypoint": "destination4",
+          "distance": 392168.0,
+          "time": 23054.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        },
+        {
+          "fromWaypoint": "destination4",
+          "toWaypoint": "destination6",
+          "distance": 197920.0,
+          "time": 12020.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        },
+        {
+          "fromWaypoint": "destination6",
+          "toWaypoint": "destination5",
+          "distance": 433545.0,
+          "time": 25706.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        },
+        {
+          "fromWaypoint": "destination5",
+          "toWaypoint": "destination3",
+          "distance": 290952.0,
+          "time": 17735.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        },
+        {
+          "fromWaypoint": "destination3",
+          "toWaypoint": "destination2",
+          "distance": 2781.0,
+          "time": 718.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        },
+        {
+          "fromWaypoint": "destination2",
+          "toWaypoint": "destination1",
+          "distance": 193684.0,
+          "time": 12620.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        },
+        {
+          "fromWaypoint": "destination1",
+          "toWaypoint": "end",
+          "distance": 430600.0,
+          "time": 24284.0,
+          "rest": 0.0,
+          "waiting": 0.0
+        }
+      ],
+      "description": "Targeted best time; with , improvement for traffic",
+      "timeBreakdown": {
+        "driving": 116137,
+        "service": 0,
+        "rest": 0,
+        "waiting": 0
+      }
+    }
+  ],
+  "errors": [],
+  "processingTimeDesc": "41818ms",
+  "responseCode": "200",
+  "warnings": null,
+  "requestId": null
+}
