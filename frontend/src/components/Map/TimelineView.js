@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     minWidth: '20vw',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'gray',
     overflow: 'auto',
     maxHeight: '11vw',
   },
