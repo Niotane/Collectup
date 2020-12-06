@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '32vw',
   },
 }));
-
 function MapView() {
   const classes = useStyles();
 
