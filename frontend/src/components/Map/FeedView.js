@@ -76,17 +76,20 @@ export default function FeedView({ posts }) {
 
   return (
     <Grid className={classes.box} container>
-      <Grid item xs={15}>
-        <Grid container justify='center' alignItems='center' spacing={4}>
-          <Grid item xs={10}>
-            <Typography variant='h2' className={classes.heading}>
-              MY FEED
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Grid container spacing={2}>
-              <Posts posts={posts} />
-            </Grid>
+      <Grid item container spacing={4} xs={12}>
+        <Grid item xs={5} />
+        <Grid item xs={3}>
+          <Typography variant='h2' className={classes.heading}>
+            MY FEED
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+          <Grid />
+        </Grid>
+        <Grid item>
+          <Grid container spacing={2}>
+            <Posts posts={posts} />
           </Grid>
         </Grid>
       </Grid>
