@@ -1,10 +1,9 @@
 import React from 'react';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { Clock } from 'grommet';
 import {
   Avatar,
   Box,
+  Divider,
   Grid,
   Button,
   CircularProgress,
@@ -22,13 +21,15 @@ import LocationCityIcon from '@material-ui/icons/LocationCity';
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    backgroundColor: theme.palette.background.default,
-    minHeight: '30vw',
+    backgroundColor: '#393939',
+    minHeight: '15vw',
     padding: theme.spacing(2),
   },
   list: {
     minWidth: '20vw',
     backgroundColor: theme.palette.background.paper,
+    overflow: 'auto',
+    maxHeight: '11vw',
   },
   clock: {
     fontFamily: `'Montserrat', sans-serif`,
@@ -46,7 +47,7 @@ function TimelineView({ setQuery, midLocations }) {
 
   return (
     <Grid className={classes.box} container justify='flex-start'>
-      <Grid item sm={3}>
+      {/* <Grid item sm={3}>
         <Typography
           variant='h5'
           color='textSecondary'
@@ -104,8 +105,8 @@ function TimelineView({ setQuery, midLocations }) {
             </Grid>
           </Grid>
         </form>
-      </Grid>
-      <Grid item sm={9}>
+      </Grid> */}
+      <Grid item sm={11}>
         <Grid container direction='row' justify='space-between'>
           <Grid item>
             <Grid container direction='column' alignItems='flex-start'>
@@ -114,7 +115,7 @@ function TimelineView({ setQuery, midLocations }) {
                 color='textSecondary'
                 className={classes.heading}
               >
-                TIMELINE
+                - CURRENT ROUTE -
               </Typography>
               <Box m={1} />
               <List
@@ -126,11 +127,24 @@ function TimelineView({ setQuery, midLocations }) {
                     className={classes.heading}
                   >
                     Location and timings
+                    <Divider />
                   </ListSubheader>
                 }
               >
                 <ListItems items={midLocations} />
               </List>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid container direction='column' alignItems='center'>
+              <Typography
+                variant='h5'
+                color='textSecondary'
+                className={classes.heading}
+              >
+                NEXT PICKUP :
+              </Typography>
+              <Box m={1} />
             </Grid>
           </Grid>
           <Grid item>
@@ -146,45 +160,6 @@ function TimelineView({ setQuery, midLocations }) {
               <Box className={classes.clock}>
                 <Clock type='digital' size='xlarge' />
               </Box>
-              <Box m={4} />
-
-              <Typography
-                variant='h5'
-                color='textSecondary'
-                className={classes.heading}
-              >
-                JOURNEY PROGRESS
-              </Typography>
-              <Box m={1} />
-              <CircularProgress
-                variant='determinate'
-                size={100}
-                thickness={8}
-                value={70}
-              />
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Grid container direction='column' alignItems='center'>
-              <Typography
-                variant='h5'
-                color='textSecondary'
-                className={classes.heading}
-              >
-                PICK YOUR DATE
-              </Typography>
-              <Box m={1} />
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  autoOk
-                  disablePast
-                  animateYearScrolling
-                  orientation='portrait'
-                  variant='static'
-                  openTo='date'
-                  value={new Date()}
-                />
-              </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
         </Grid>
