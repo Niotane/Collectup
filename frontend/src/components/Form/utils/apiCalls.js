@@ -19,7 +19,7 @@ const getCoordinates = async (query) => {
 
   if (res.status === 200) {
     const body = await res.json();
-    if (body.items) return body.items[0].position;
+    if (body.items.length > 0) return body.items[0].position;
   }
 
   return { lat: undefined, lng: undefined };

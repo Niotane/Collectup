@@ -9,9 +9,15 @@ import generateToken from './util/generateToken';
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark',
+    type: 'light',
     primary: {
-      main: '#7D4CDB',
+      main: '#5B86E5',
+    },
+    secondary: {
+      main: '#EC9A29',
+    },
+    tertiary: {
+      main: '#CDEDFD',
     },
   },
   Typography: {

@@ -40,7 +40,7 @@ function DriverView() {
         const newMarkers = response.data.map(
           ({ location: { lat, lng } }) => `${lat},${lng}`
         );
-        setMarkersList({ origin, markers: newMarkers });
+        setMarkersList({ origin: '', markers: newMarkers });
       }
     };
 

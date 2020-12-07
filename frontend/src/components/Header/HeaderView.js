@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.8em',
     flexGrow: 1,
     display: 'none',
-
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -27,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
   body1: {
     fontFamily: `'Montserrat', sans-serif`,
-    fontWeight: '400',
+    fontWeight: '600',
     fontSize: '0.7em',
     flexGrow: 1,
+    color: theme.palette.tertiary.main,
   },
   logoImg: {
     maxWidth: 40,
@@ -87,7 +87,7 @@ function HeaderView({ setDriverView, driverView }) {
                     Go to Maps View
                   </Typography>
                   <Box m={3} />
-                  <Map />
+                  <Map style={{ color: 'whitesmoke' }} />
                 </>
               )}
               {!driverView && (
@@ -100,7 +100,7 @@ function HeaderView({ setDriverView, driverView }) {
                     Driver View
                   </Typography>
                   <Box m={1} />
-                  <LocalShipping />
+                  <LocalShipping style={{ color: 'whitesmoke' }} />
                 </>
               )}
             </IconButton>

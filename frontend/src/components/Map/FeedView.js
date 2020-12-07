@@ -18,6 +18,7 @@ import ta from 'time-ago';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CollectionsIcon from '@material-ui/icons/Collections';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotate(180deg)',
   },
   box: {
-    backgroundColor: '#005B5E',
+    backgroundColor: theme.palette.tertiary.main,
     minHeight: '30vw',
     padding: theme.spacing(2),
   },
@@ -54,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: 'hide',
   },
   heading: {
+    color: theme.palette.grey[800],
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
     color: 'white',
@@ -111,7 +113,7 @@ function Posts({ posts }) {
       <Grid item key={JSON.stringify(post)} xs={12} sm={4}>
         <Card className={classes.root} key={JSON.stringify(post)}>
           <CardMedia
-            alt='Contemplative Reptile'
+            alt='User Image'
             className={classes.media}
             image={post.imageURL}
           />
