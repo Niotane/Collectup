@@ -66,7 +66,7 @@ const Chart = ({ data }) => {
             </Typography>
           </Grid>
           <Grid item sm={12}>
-            <ResponsiveContainer height={300}>
+            <ResponsiveContainer height={320}>
               <AreaChart data={interconnections}>
                 <Area
                   type='natural'

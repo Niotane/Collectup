@@ -6,7 +6,6 @@ import {
   Divider,
   Grid,
   Button,
-  CircularProgress,
   FormControl,
   TextField,
   Typography,
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
-    color: theme.palette.secondary.dark,
+    color: theme.palette.secondary.main,
   },
   card: {
     width: '40vh',

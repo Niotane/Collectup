@@ -25,28 +25,22 @@ import LineChart from './Graphs';
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.grey[200],
     minHeight: '20vw',
     padding: theme.spacing(2),
-  },
-  clock: {
-    fontFamily: `'Montserrat', sans-serif`,
-    fontWeight: '600',
-    color: '#7D4CDB',
   },
   heading: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
   },
   label: {
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.primary.dark,
     fontSize: '0.8em',
   },
   subheading: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: '800',
     fontSize: '1.2em',
-    color: '#7D4CDB',
   },
 }));
 
