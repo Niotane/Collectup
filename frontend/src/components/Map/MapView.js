@@ -1,5 +1,6 @@
 import { Suspense, useState, useEffect, useCallback } from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, Snackbar, IconButton, makeStyles } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import Modal from 'react-modal';
 import { ErrorBoundary } from 'react-error-boundary';
 import ScaleLoader from 'react-spinners/ScaleLoader';
@@ -27,10 +28,11 @@ function MapView() {
   const [markersList, setMarkersList] = useState({ origin: '', markers: [] });
   const [origin, setOrigin] = useState('48.86,2.31');
   const [posts, setPosts] = useState([]);
-  // const [currMarker, setCurrMarker] = useState({});
+  const [isSnackbar, setIsSnackbar] = useState(false);
 
   useEffect(() => {
     const fetchMarkers = async () => {
+      setIsSnackbar(true);
       const response = await sendRequest('/location');
       if (response) {
         console.log('[*] User Posts', response);
@@ -96,6 +98,28 @@ function MapView() {
           </Grid>
         </Suspense>
       </Grid>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={isSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setIsSnackbar(false)}
+        message='Generating routes...'
+        action={
+          <>
+            <IconButton
+              size='small'
+              aria-label='close'
+              color='inherit'
+              onClick={() => setIsSnackbar(false)}
+            >
+              <CloseIcon fontSize='small' />
+            </IconButton>
+          </>
+        }
+      />
       <TimelineView setQuery={setQuery} midLocations={viaLocations} />
       <FeedView posts={posts} />
       <FormView />
