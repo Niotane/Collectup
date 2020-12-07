@@ -11,18 +11,19 @@ import {
   Typography,
   CardMedia,
   Collapse,
+  Divider,
 } from '@material-ui/core';
 import PuffLoader from 'react-spinners/PuffLoader';
 import ta from 'time-ago';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CollectionsIcon from '@material-ui/icons/Collections';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '40vh',
     minHeight: '40vh',
-    backgroundColor: '',
     margin: 'sm',
     flexJustify: 'around',
     direction: 'row',
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotate(180deg)',
   },
   box: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.tertiary.main,
     minHeight: '30vw',
     padding: theme.spacing(2),
   },
@@ -52,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
     overflowY: 'hide',
   },
   heading: {
+    color: theme.palette.grey[800],
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
-    color: 'white',
   },
   subheading: {
     fontFamily: `'Montserrat', sans-serif`,
@@ -67,30 +68,28 @@ export default function FeedView({ posts }) {
 
   if (posts.length === 0) {
     return (
-      <Grid
-        className={classes.box}
-        container
-        justify='center'
-        alignItems='center'
-      >
+      <Grid className={classes.box} container>
         <PuffLoader size={30} color='#b390f5' />
       </Grid>
     );
   }
 
   return (
-    <Grid className={classes.box} container justify='space-between'>
-      <Grid item xs={12}>
-        <Grid container justify='center' spacing={3}>
-          <Grid item>
-            <Typography variant='h2' className={classes.heading}>
-              MY FEED
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Grid container justify='flex-start' spacing={2}>
-              <Posts posts={posts} />
-            </Grid>
+    <Grid className={classes.box} container>
+      <Grid item container spacing={4} xs={12}>
+        <Grid item xs={5} />
+        <Grid item xs={3}>
+          <Typography variant='h2' className={classes.heading}>
+            <CollectionsIcon style={{ fontSize: '50' }} /> MY FEED
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+          <Grid />
+        </Grid>
+        <Grid item>
+          <Grid container spacing={2}>
+            <Posts posts={posts} />
           </Grid>
         </Grid>
       </Grid>
@@ -113,7 +112,7 @@ function Posts({ posts }) {
       <Grid item key={JSON.stringify(post)} lg={3}>
         <Card className={classes.root} key={JSON.stringify(post)}>
           <CardMedia
-            alt='Contemplative Reptile'
+            alt='User Image'
             className={classes.media}
             image={post.imageURL}
           />
@@ -129,6 +128,7 @@ function Posts({ posts }) {
             <Typography variant='body2' color='textSecondary' component='p'>
               {post.description}
             </Typography>
+            <Divider />
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label='add to favorites'>

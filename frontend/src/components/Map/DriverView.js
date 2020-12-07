@@ -61,7 +61,7 @@ function DriverView() {
           >
             <Tab label='Calculate Route' />
             <Tab label='Connect to Customers' />
-            <Tab label='Previous Pickups' />
+            <Tab label='My Feed' />
           </Tabs>
         </AppBar>
         {value === 0 && <WayPointSequenceView markers={markers} />}
@@ -72,7 +72,7 @@ function DriverView() {
         )}
         {value === 2 && (
           <Grid item sm={12} className={classes.driver}>
-            Previous Pickups
+            My Feed
           </Grid>
         )}
       </Suspense>

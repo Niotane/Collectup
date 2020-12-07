@@ -1,10 +1,9 @@
 import React from 'react';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { Clock } from 'grommet';
 import {
   Avatar,
   Box,
+  Divider,
   Grid,
   Button,
   CircularProgress,
@@ -17,27 +16,44 @@ import {
   ListItemAvatar,
   ListItemText,
   ListSubheader,
+  CardActions,
+  Card,
+  CardContent,
+  CardActionArea,
 } from '@material-ui/core';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
+import DirectionsIcon from '@material-ui/icons/Directions';
+import PinDropIcon from '@material-ui/icons/PinDrop';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import TimelapseIcon from '@material-ui/icons/Timelapse';
 
 const useStyles = makeStyles((theme) => ({
   box: {
     backgroundColor: theme.palette.background.default,
-    minHeight: '30vw',
+    minHeight: '15vw',
     padding: theme.spacing(2),
   },
   list: {
-    minWidth: '20vw',
     backgroundColor: theme.palette.background.paper,
+    minWidth: '20vw',
+    overflow: 'auto',
+    maxHeight: '15vw',
   },
   clock: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: '600',
-    color: '#7D4CDB',
+    color: theme.palette.success.main,
   },
   heading: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
+    color: theme.palette.secondary.dark,
+  },
+  card: {
+    width: '40vh',
+    margin: 'sm',
+    flexJustify: 'around',
+    direction: 'row',
   },
 }));
 
@@ -47,12 +63,8 @@ function TimelineView({ setQuery, midLocations }) {
   return (
     <Grid className={classes.box} container justify='flex-start'>
       <Grid item sm={3}>
-        <Typography
-          variant='h5'
-          color='textSecondary'
-          className={classes.heading}
-        >
-          PICK UP LOCATION
+        <Typography variant='h5' color='primary' className={classes.heading}>
+          <PinDropIcon /> PICK UP LOCATION
         </Typography>
         <Box m={4} />
         <form
@@ -114,7 +126,7 @@ function TimelineView({ setQuery, midLocations }) {
                 color='textSecondary'
                 className={classes.heading}
               >
-                TIMELINE
+                <DirectionsIcon /> CURRENT ROUTE
               </Typography>
               <Box m={1} />
               <List
@@ -126,6 +138,7 @@ function TimelineView({ setQuery, midLocations }) {
                     className={classes.heading}
                   >
                     Location and timings
+                    <Divider />
                   </ListSubheader>
                 }
               >
@@ -140,51 +153,45 @@ function TimelineView({ setQuery, midLocations }) {
                 color='textSecondary'
                 className={classes.heading}
               >
-                LOCAL TIME
+                <SkipNextIcon /> NEXT PICKUP
               </Typography>
               <Box m={1} />
-              <Box className={classes.clock}>
-                <Clock type='digital' size='xlarge' />
-              </Box>
-              <Box m={4} />
-
-              <Typography
-                variant='h5'
-                color='textSecondary'
-                className={classes.heading}
-              >
-                JOURNEY PROGRESS
-              </Typography>
-              <Box m={1} />
-              <CircularProgress
-                variant='determinate'
-                size={100}
-                thickness={8}
-                value={70}
-              />
+              <Card className={classes.card}>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography gutterBottom variant='h6'>
+                      {midLocations.length > 0 && midLocations[0].location}
+                    </Typography>
+                    <Typography
+                      variant='body2'
+                      color='textSecondary'
+                      component='p'
+                    >
+                      {midLocations.length > 0 && midLocations[0].time}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button size='small' color='primary'>
+                    Learn More
+                  </Button>
+                </CardActions>
+              </Card>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item sm={2}>
             <Grid container direction='column' alignItems='center'>
               <Typography
                 variant='h5'
                 color='textSecondary'
                 className={classes.heading}
               >
-                PICK YOUR DATE
+                <TimelapseIcon /> LOCAL TIME
               </Typography>
               <Box m={1} />
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  autoOk
-                  disablePast
-                  animateYearScrolling
-                  orientation='portrait'
-                  variant='static'
-                  openTo='date'
-                  value={new Date()}
-                />
-              </MuiPickersUtilsProvider>
+              <Box className={classes.clock}>
+                <Clock type='digital' size='xlarge' />
+              </Box>
             </Grid>
           </Grid>
         </Grid>
