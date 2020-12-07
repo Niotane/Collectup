@@ -18,17 +18,21 @@ import ta from 'time-ago';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CollectionsIcon from '@material-ui/icons/Collections';
+import CollectionIcon from '@material-ui/icons/CollectionsOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: '#268386',
-    minHeight: '70vh',
+    width: '35vh',
+    minHeight: '25vh',
+    backgroundColor: theme.palette.background.paper,
+    margin: 'sm',
+    flexJustify: 'around',
+    direction: 'row',
   },
   media: {
     component: 'img',
     height: 0,
-    paddingTop: '75%',
+    paddingTop: '56.25%', // 16:9
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -41,24 +45,17 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotate(180deg)',
   },
   box: {
-    backgroundColor: theme.palette.tertiary.main,
+    backgroundColor: theme.palette.grey[400],
     minHeight: '30vw',
     padding: theme.spacing(2),
-  },
-  gridContainer: {
-    paddingLeft: '10%',
-    paddingRight: '10%',
-    paddingTop: '2%',
   },
   fixedCard: {
     height: '3vh',
     overflowY: 'hide',
   },
   heading: {
-    color: theme.palette.grey[800],
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
-    color: 'white',
     padding: '20px',
   },
   subheading: {
@@ -72,26 +69,31 @@ export default function FeedView({ posts }) {
 
   if (posts.length === 0) {
     return (
-      <Grid className={classes.box} container>
+      <Grid
+        className={classes.box}
+        container
+        justify='center'
+        alignItems='center'
+      >
         <PuffLoader size={30} color='#b390f5' />
       </Grid>
     );
   }
 
   return (
-    <Grid className={classes.box} container>
-      <Grid item container spacing={4} xs={12} justify='center'>
-        <Typography variant='h2' className={classes.heading}>
-          MY FEED
-        </Typography>
-      </Grid>
+    <Grid className={classes.box} container justify='space-between'>
       <Grid item xs={12}>
-        <Divider />
-        <Grid />
-      </Grid>
-      <Grid item>
-        <Grid container spacing={2} className={classes.gridContainer}>
-          <Posts posts={posts} />
+        <Grid container justify='center' spacing={3}>
+          <Grid item>
+            <Typography variant='h2' className={classes.heading}>
+              <CollectionIcon style={{ fontSize: '2.5vw' }} /> MY FEED
+            </Typography>
+          </Grid>
+          <Grid item sm={10}>
+            <Grid container justify='flex-start' spacing={2} sm={12}>
+              <Posts posts={posts} />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
@@ -110,7 +112,7 @@ function Posts({ posts }) {
 
   return posts.map((post) => {
     return (
-      <Grid item key={JSON.stringify(post)} xs={12} sm={4}>
+      <Grid item key={JSON.stringify(post)} sm={3}>
         <Card className={classes.root} key={JSON.stringify(post)}>
           <CardMedia
             alt='User Image'
