@@ -31,26 +31,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     color: theme.palette.tertiary.main,
   },
-  logo: {
-    position: 'relative',
-    color: theme.palette.tertiary.main,
-    borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
   logoImg: {
     maxWidth: 40,
     maxHeight: 50,
     position: 'absolute',
-    justifyContent: 'center',
     alignItems: 'center',
     display: 'flex',
-    padding: theme.spacing(0, 2),
+    paddingRight: '12px',
   },
   grow: {
     flexGrow: 1,
@@ -72,14 +59,12 @@ function HeaderView({ setDriverView, driverView }) {
           >
             <Menu />
           </IconButton>
-          <div className={classes.logo}>
-            <div className={classes.logoImg}>
-              <img
-                src='https://i.ibb.co/5TbtcBc/test.png'
-                alt='logo'
-                className={classes.logoImg}
-              />
-            </div>
+          <div className={classes.logoImg}>
+            <img
+              src='https://i.ibb.co/5TbtcBc/test.png'
+              alt='logo'
+              className={classes.logoImg}
+            />
           </div>
           <Typography
             variant='h6'
