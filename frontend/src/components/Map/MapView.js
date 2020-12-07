@@ -47,8 +47,6 @@ function MapView() {
     fetchMarkers();
   }, [origin, sendRequest]);
 
-  // console.log(`[*] Current Marker - ${JSON.stringify(currMarker)}`);
-
   const addMarker = (newMarker) => {
     setMarkersList((prev) => ({
       origin: prev.origin,

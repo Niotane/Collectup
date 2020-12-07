@@ -64,9 +64,9 @@ export const HEREMap = ({
       if (setLayer && setLayer.mapType && setLayer.layer) {
         const { mapType, layer } = setLayer;
         if (mapType === 'incidents' || mapType === 'venues') {
-          customLayer = defaultLayers.vector[mapType];
+          customLayer = defaultLayers.raster[mapType];
         } else {
-          customLayer = defaultLayers.vector[mapType][layer];
+          customLayer = defaultLayers.raster[mapType][layer];
         }
       }
 
