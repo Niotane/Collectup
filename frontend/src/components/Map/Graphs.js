@@ -133,7 +133,6 @@ const Markers = ({ points, query, addMarker, setOrigin }) => {
 };
 
 function parseSeconds(seconds) {
-  // day, h, m and s
   var days = Math.floor(seconds / (24 * 60 * 60));
   seconds -= days * (24 * 60 * 60);
   var hours = Math.floor(seconds / (60 * 60));
