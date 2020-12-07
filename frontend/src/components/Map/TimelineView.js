@@ -146,7 +146,7 @@ function TimelineView({ setQuery, midLocations }) {
             </Grid>
           </Grid>
           <Grid item>
-            <Grid container direction='column' alignItems='center'>
+            <Grid container direction='column' alignItems='flex-start'>
               <Typography
                 variant='h5'
                 color='textSecondary'
