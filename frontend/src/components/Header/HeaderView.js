@@ -17,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.8em',
     flexGrow: 1,
     display: 'none',
+    color: theme.palette.grey[200],
+    letterSpacing: theme.spacing(0.3),
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '600',
     fontSize: '0.7em',
     flexGrow: 1,
-    color: theme.palette.tertiary.main,
+    color: theme.palette.grey[200],
   },
   logoImg: {
     maxWidth: 40,
@@ -72,7 +74,7 @@ function HeaderView({ setDriverView, driverView }) {
             noWrap
             className={classes.title}
           >
-            CollectUp
+            COLLECT-UP
           </Typography>
 
           <div>
