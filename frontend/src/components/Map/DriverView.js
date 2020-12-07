@@ -3,6 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { AppBar, Tabs, Tab, Grid, makeStyles } from '@material-ui/core';
 import WayPointSequenceView from './WayPointSequenceView';
+import CustomerConnect from './CustomerConnect';
 import useAPI from '../../util/useAPI';
 
 // https://developer.here.com/documentation/routing-waypoints/dev_guide/topics/example-pickup.html
@@ -67,7 +68,7 @@ function DriverView() {
         {value === 0 && <WayPointSequenceView markers={markers} />}
         {value === 1 && (
           <Grid item sm={12} className={classes.driver}>
-            Connect to Customers
+            <CustomerConnect />
           </Grid>
         )}
         {value === 2 && (
