@@ -60,6 +60,7 @@ function MapView() {
       return { ...loc, time: relativeTime };
     });
     setViaLocations([...newLocations]);
+    setIsSnackbar(false);
   }, []);
 
   return (
@@ -74,7 +75,7 @@ function MapView() {
               animateZoom
               interactive
               hidpi
-              zoom={6}
+              zoom={8}
             >
               <Markers
                 points={markersList}
