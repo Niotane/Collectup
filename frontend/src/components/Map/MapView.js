@@ -75,7 +75,7 @@ function MapView() {
               animateZoom
               interactive
               hidpi
-              zoom={8}
+              zoom={6}
             >
               <Markers
                 points={markersList}
@@ -89,7 +89,7 @@ function MapView() {
                 via={markersList.markers}
                 returnType='polyline'
                 transportMode='truck'
-                strokeColor='#f55b5b'
+                strokeColor='#4357AD'
                 lineWidth={4}
                 setLocationsCallback={addLocations}
               />
