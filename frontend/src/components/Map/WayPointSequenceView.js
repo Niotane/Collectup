@@ -19,7 +19,9 @@ import {
   Snackbar,
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import PuffLoader from 'react-spinners/PuffLoader';
 import getCoordinates from '../Form/utils/apiCalls';
+import LineChart from './Graphs';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 function WayPointSequenceView({ markers }) {
   const classes = useStyles();
 
-  const [mode, setMode] = useState('shortest');
+  const [mode, setMode] = useState('fastest');
   const [transportMode, setTransportMode] = useState('truck');
   const [trafficMode, setTrafficMode] = useState('enabled');
   const [height, setHeight] = useState(undefined);
@@ -68,6 +70,9 @@ function WayPointSequenceView({ markers }) {
   const [departure, setDeparture] = useState(new Date());
   const [restTimes, setRestTimes] = useState('default');
   const [isAlert, setIsAlert] = useState(false);
+  const [data, setData] = useState(undefined);
+  const [err, setErr] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
     const timeOutId = setTimeout(async () => {
@@ -120,9 +125,20 @@ function WayPointSequenceView({ markers }) {
     console.log(baseUrl);
 
     const token = process.env.REACT_APP_HERE_API_REST_KEY;
+    setIsLoading(true);
+
     (async () => {
-      const res = await axios.get(`${baseUrl}&apiKey=${token}`);
-      console.log(res);
+      const {
+        data: { results, errors },
+      } = await axios.get(`${baseUrl}&apiKey=${token}`);
+      setIsLoading(false);
+      if (results.length > 0) {
+        setData(results[0]);
+      }
+      if (errors.length > 0) {
+        setErr(errors[0]);
+        setIsAlert(true);
+      }
     })();
   };
 
@@ -131,15 +147,21 @@ function WayPointSequenceView({ markers }) {
       <Snackbar
         open={isAlert}
         autoHideDuration={6000}
-        onClose={() => setIsAlert(false)}
+        onClose={() => {
+          setIsAlert(false);
+          setErr(undefined);
+        }}
       >
         <Alert
-          onClose={() => setIsAlert(false)}
+          onClose={() => {
+            setIsAlert(false);
+            setErr(undefined);
+          }}
           variant='filled'
           severity='error'
         >
           <AlertTitle>Error</AlertTitle>
-          Required: Start Location missing!
+          {err || 'Required: Start Location missing!'}
         </Alert>
       </Snackbar>
       <Grid container className={classes.box}>
@@ -161,10 +183,10 @@ function WayPointSequenceView({ markers }) {
                       value={mode}
                       onChange={(e) => setMode(e.target.value)}
                     >
-                      <MenuItem value='shortest' defaultChecked>
-                        Shortest
+                      <MenuItem value='fastest' defaultChecked>
+                        Fastest
                       </MenuItem>
-                      <MenuItem value='fastest'>Fastest</MenuItem>
+                      <MenuItem value='shortest'>Shortest</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -490,10 +512,17 @@ function WayPointSequenceView({ markers }) {
                 color='secondary'
                 variant='contained'
                 onClick={getEndpoint}
+                disabled={isLoading}
               >
                 Calculate
               </Button>
             </Grid>
+          </Grid>
+        </Grid>
+        <Grid item sm={6}>
+          <Grid container justify='center'>
+            {isLoading && <PuffLoader />}
+            {!isLoading && <LineChart data={data} />}
           </Grid>
         </Grid>
       </Grid>
