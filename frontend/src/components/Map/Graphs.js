@@ -1,8 +1,6 @@
 import {
-  LineChart,
   AreaChart,
   Area,
-  Label,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -88,29 +86,50 @@ const Chart = ({ data }) => {
           >
             <HEREMap
               apikey={process.env.REACT_APP_HERE_API_KEY || ''}
-              center={{ lat: 50, lng: 5 }}
+              center={{ lat: 48, lng: 11 }}
               animateCenter
               animateZoom
               interactive
               hidpi
               zoom={6}
-              setLayer={{ layer: 'trafficnight', mapType: 'normal' }}
             >
               <RoutePath
                 origin={markers[0]}
-                destination={markers[7]}
+                destination={markers[markers.length - 1]}
                 via={markers}
                 returnType='polyline'
                 transportMode='truck'
                 strokeColor='#f55b5b'
                 lineWidth={4}
               />
+              <Markers points={markers} />
             </HEREMap>
           </Grid>
         </Grid>
       </Grid>
     </>
   );
+};
+
+const Markers = ({ points, query, addMarker, setOrigin }) => {
+  if (query) {
+    return (
+      <Marker
+        isOrigin
+        query={query}
+        data='Start Location'
+        propCallback={{ addMarker, setOrigin }}
+        key={query}
+      />
+    );
+  }
+
+  return points.map((point) => {
+    const [lat, lng] = point.split(',');
+    if (lat && lng)
+      return <Marker lat={lat} lng={lng} data='demo1' key={point} />;
+    return null;
+  });
 };
 
 function parseSeconds(seconds) {
