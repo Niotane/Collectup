@@ -17,6 +17,12 @@ import {
   ListItemSecondaryAction,
   Avatar,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  TextField,
 } from '@material-ui/core';
 import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -53,6 +59,7 @@ const CustomerConnect = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [completedRequests, setCompletedRequests] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchMarkers = async () => {
@@ -144,13 +151,21 @@ const CustomerConnect = () => {
                   }
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge='end' aria-label='message'>
+                  <IconButton
+                    edge='end'
+                    aria-label='message'
+                    onClick={() => setDialogIsOpen(true)}
+                  >
                     <ChatIcon fontSize='default' />
                   </IconButton>
                   <IconButton edge='end' aria-label='call'>
                     <CallIcon fontSize='default' />
                   </IconButton>
-                  <IconButton edge='end' aria-label='email'>
+                  <IconButton
+                    edge='end'
+                    aria-label='email'
+                    onClick={() => setDialogIsOpen(true)}
+                  >
                     <MailOutlineIcon fontSize='default' />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -165,31 +180,71 @@ const CustomerConnect = () => {
   );
 
   return (
-    <Grid container justify='center' classname={classes.root}>
-      <Grid item sm={8}>
-        <Box m={2} />
-        <Typography variant='h4' className={classes.heading}>
-          <ForumOutlinedIcon /> Pending Requests
-        </Typography>
-        <Box m={2} />
-        {customList(pendingRequests)}
+    <>
+      <DialogView
+        dialogIsOpen={dialogIsOpen}
+        setDialogIsOpen={setDialogIsOpen}
+      />
+      <Grid container justify='center' classname={classes.root}>
+        <Grid item sm={8}>
+          <Box m={2} />
+          <Typography variant='h4' className={classes.heading}>
+            <ForumOutlinedIcon /> Pending Requests
+          </Typography>
+          <Box m={2} />
+          {customList(pendingRequests)}
+        </Grid>
+        <Grid item sm={8}>
+          <Box m={2} />
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={() => setShowHistory((v) => !v)}
+          >
+            Show Requests History
+          </Button>
+          {showHistory && (
+            <Collapse in={showHistory} timeout='auto'>
+              {customList(completedRequests)}
+            </Collapse>
+          )}
+        </Grid>
       </Grid>
-      <Grid item sm={8}>
-        <Box m={2} />
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={() => setShowHistory((v) => !v)}
-        >
-          Show Requests History
+    </>
+  );
+};
+
+const DialogView = ({ dialogIsOpen, setDialogIsOpen }) => {
+  return (
+    <Dialog
+      open={dialogIsOpen}
+      onClose={() => setDialogIsOpen(false)}
+      aria-labelledby='form-dialog-title'
+    >
+      <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Type in a message to customer. For ex. When you would arrive? Or there
+          is a delay in arriving!
+        </DialogContentText>
+        <TextField
+          autoFocus
+          margin='dense'
+          id='name'
+          label='Text Message'
+          type='text'
+          fullWidth
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setDialogIsOpen(false)} color='primary'>
+          Cancel
         </Button>
-        {showHistory && (
-          <Collapse in={showHistory} timeout='auto'>
-            {customList(completedRequests)}
-          </Collapse>
-        )}
-      </Grid>
-    </Grid>
+        <Button onClick={() => setDialogIsOpen(false)} color='primary'>
+          Send
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
