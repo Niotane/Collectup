@@ -52,6 +52,7 @@ function FormView() {
         onClick={() => {
           setIsOpen((prev) => !prev);
         }}
+        color='primary'
       >
         <AddIcon className={classes.extendedIcon} />
         Create New Post
