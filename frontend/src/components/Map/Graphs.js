@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: '800',
     fontSize: '1.2em',
-    color: '#7D4CDB',
+    color: theme.palette.secondary.main,
     marginLeft: theme.spacing(10),
   },
   description: {
-    color: theme.palette.grey[100],
+    color: theme.palette.grey[500],
     marginLeft: theme.spacing(1),
   },
 }));
