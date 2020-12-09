@@ -1,11 +1,16 @@
 import React from 'react';
-import { Grid, Link } from '@material-ui/core';
+import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: theme.palette.primary.main,
     height: '8vh',
+    paddingTop: '8px',
+    color: '',
+  },
+  Typo: {
+    color: 'secondary',
   },
 }));
 
@@ -17,13 +22,33 @@ function FooterView() {
       container
       direction='column'
       className={`${classes.footer}`}
-      justify='center'
+      justify='flex-start'
       alignItems='center'
     >
-      <Grid item>
-        <Link href='https://github.com/Niotane/Collectup' color='textSecondary'>
+      <Grid item md='6'>
+        <Typography>
           MIT License
-        </Link>
+          <Link href='https://github.com/Niotane/Collectup' color='blue'>
+            {' '}
+            | Github
+          </Link>
+        </Typography>
+      </Grid>
+
+      <Grid item md='6'>
+        <Typography>
+          Contact us : Product Manager :
+          <Link href='https://www.linkedin.com/in/antoine-beine' color='blue'>
+            {' '}
+            Antoine Beine{' '}
+          </Link>
+          | Tech Lead :
+          <Link href='https://www.linkedin.com/in/sauravmh/' color='blue'>
+            {' '}
+            Saurav M.Hiremath{' '}
+          </Link>
+          |
+        </Typography>
       </Grid>
     </Grid>
   );
