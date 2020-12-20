@@ -22,7 +22,6 @@ import CollectionIcon from '@material-ui/icons/CollectionsOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '35vh',
     minHeight: '25vh',
     backgroundColor: theme.palette.background.paper,
     margin: 'sm',
@@ -56,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: 'bold',
-    padding: '20px',
   },
   subheading: {
     fontFamily: `'Montserrat', sans-serif`,
@@ -89,8 +87,8 @@ export default function FeedView({ posts }) {
               <CollectionIcon style={{ fontSize: '2.5vw' }} /> MY FEED
             </Typography>
           </Grid>
-          <Grid item sm={10}>
-            <Grid container justify='flex-start' spacing={2} sm={12}>
+          <Grid item xs={12}>
+            <Grid container justify='center' spacing={2}>
               <Posts posts={posts} />
             </Grid>
           </Grid>
@@ -112,7 +110,7 @@ function Posts({ posts }) {
 
   return posts.map((post) => {
     return (
-      <Grid item key={JSON.stringify(post)} sm={3}>
+      <Grid item key={JSON.stringify(post)} lg={3} md={4} sm={6} xs={12}>
         <Card className={classes.root} key={JSON.stringify(post)}>
           <CardMedia
             alt='User Image'
