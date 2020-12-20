@@ -16,12 +16,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontFamily: `'Montserrat', sans-serif`,
     fontWeight: '800',
-    fontSize: '1.8em',
-    display: 'none',
+    fontSize: '0.9em',
     color: theme.palette.grey[200],
     letterSpacing: theme.spacing(0.3),
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
+      fontSize: '1.8em',
     },
   },
   menuButton: {
@@ -33,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '0.7em',
     flexGrow: 1,
     color: theme.palette.grey[200],
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
   },
   logoImg: {
     position: 'relative',
