@@ -44,6 +44,14 @@ The CollectUp Web App serves 2 different clients, namely, community members with
 It was a challenge for us to finish implementing the different features we had planned in time. Working on creating an ORM for JS SDK for React caused the whole development process to take longer than expected. But this bore fruit at later stages when the component flow was perfect. Working with HERE was a fun experience, the documentation and the customization options are endless!
 
 
+## Usage Screenshots
+
+![image](https://github.com/user-attachments/assets/7ff3fbf1-610e-447d-86e4-7a1ec7e42a89)
+![image](https://github.com/user-attachments/assets/34187f90-6bda-462d-a633-f591fa74ecc8)
+![image](https://github.com/user-attachments/assets/7486a51c-3afa-4340-887b-74c22df7825f)
+![image](https://github.com/user-attachments/assets/035b7aaa-5e74-4b37-aa30-aea3aedeb00c)
+
+
 ## Setup Development Environment
 
 Run two different Shells for backend (nodeJS) and frontend (react app)
